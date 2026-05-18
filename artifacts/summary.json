@@ -1,0 +1,38 @@
+{
+  "train_metrics": {
+    "roc_auc": 0.9955684797095523,
+    "pr_auc": 0.9859970000439983,
+    "n_train_pairs": 55968,
+    "n_val_pairs": 13992,
+    "n_features": 240
+  },
+  "validation_metrics": {
+    "roc_auc": 0.9953893069586711,
+    "pr_auc": 0.938157794830615,
+    "n_pairs": 239976
+  },
+  "test_metrics": {
+    "roc_auc": 0.9930035161056792,
+    "pr_auc": 0.9128108584915067,
+    "n_pairs": 266504
+  },
+  "config": {
+    "attribute_cols": {
+      "domain": "domain_set",
+      "phone": "phone_set",
+      "device": "device_set",
+      "city": "city_set",
+      "region": "region_set"
+    },
+    "max_freq_per_value": 3000,
+    "max_group_size": 100,
+    "knn_neighbors": 15,
+    "neg_to_pos_ratio": 5,
+    "hidden_channels": 64,
+    "out_channels": 32,
+    "epochs": 50,
+    "lr": 0.001,
+    "weight_decay": 1e-05,
+    "seed": 42
+  }
+}
