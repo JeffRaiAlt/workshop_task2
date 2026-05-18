@@ -1,0 +1,17 @@
+streamlit
+pandas
+pyarrow
+numpy
+scikit-learn
+tabulate
+matplotlib
+
+catboost
+
+
+torch
+torch-geometric
+
+networkx
+jupyter
+ipykernel
