@@ -1,0 +1,2227 @@
+====================================================================================================
+tree_depth2_leaf50
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- class: 1
+|   |--- n_block_rules >  6.50
+|   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth2_leaf200
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- class: 1
+|   |--- n_block_rules >  6.50
+|   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth2_leaf1000
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- class: 1
+|   |--- n_block_rules >  6.50
+|   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth3_leaf50
+selected_threshold=0.8
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- fs_shared_count <= 7.50
+|   |   |   |--- class: 1
+|   |   |--- fs_shared_count >  7.50
+|   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- class: 1
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth3_leaf200
+selected_threshold=0.8
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- fs_shared_count <= 7.50
+|   |   |   |--- class: 1
+|   |   |--- fs_shared_count >  7.50
+|   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- class: 1
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth3_leaf1000
+selected_threshold=0.8
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- min_block_size <= 425.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  425.50
+|   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- class: 1
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth4_leaf50
+selected_threshold=0.7
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- fs_shared_count <= 7.50
+|   |   |   |--- min_block_size <= 165.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  165.00
+|   |   |   |   |--- class: 0
+|   |   |--- fs_shared_count >  7.50
+|   |   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.46
+|   |   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- fs_total_jaccard <= 0.40
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.40
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- class: 0
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth4_leaf200
+selected_threshold=0.7
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- fs_shared_count <= 7.50
+|   |   |   |--- min_block_size <= 165.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  165.00
+|   |   |   |   |--- class: 0
+|   |   |--- fs_shared_count >  7.50
+|   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- fs_total_jaccard <= 0.40
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.40
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- class: 0
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth4_leaf1000
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- min_block_size <= 425.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  425.50
+|   |   |   |--- fs_shared_count <= 4.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  4.50
+|   |   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- sum_block_weight <= 1.12
+|   |   |   |   |--- class: 1
+|   |   |   |--- sum_block_weight >  1.12
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- class: 0
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth5_leaf50
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- fs_total_jaccard <= 0.30
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.30
+|   |   |   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- sum_block_weight <= 0.75
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.75
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- min_block_size <= 295.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  295.50
+|   |   |   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- fs_shared_count <= 7.50
+|   |   |   |--- min_block_size <= 165.00
+|   |   |   |   |--- fs_total_jaccard <= 0.65
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_total_jaccard >  0.65
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  165.00
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- class: 1
+|   |   |--- fs_shared_count >  7.50
+|   |   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.46
+|   |   |   |   |--- fs_shared_count <= 9.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  9.50
+|   |   |   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- fs_total_jaccard <= 0.40
+|   |   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.40
+|   |   |   |   |--- fs_total_jaccard <= 0.44
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_total_jaccard >  0.44
+|   |   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- sum_block_weight <= 0.95
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.95
+|   |   |   |   |   |--- class: 0
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_strong_family <= 0.50
+|   |   |   |   |--- geo_total_jaccard <= 0.75
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- geo_total_jaccard >  0.75
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- has_strong_family >  0.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth5_leaf200
+selected_threshold=0.8
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- fs_total_jaccard <= 0.30
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.30
+|   |   |   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- sum_block_weight <= 0.75
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.75
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- min_block_size <= 295.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  295.50
+|   |   |   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- fs_shared_count <= 7.50
+|   |   |   |--- min_block_size <= 165.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  165.00
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- class: 1
+|   |   |--- fs_shared_count >  7.50
+|   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- fs_total_jaccard <= 0.40
+|   |   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.40
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- sum_block_weight <= 0.95
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.95
+|   |   |   |   |   |--- class: 0
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |--- sum_block_weight <= 1.17
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  1.17
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth5_leaf1000
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- fs_total_jaccard <= 0.30
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.30
+|   |   |   |   |   |--- class: 0
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- sum_block_weight <= 0.75
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.75
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- min_block_size <= 295.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  295.50
+|   |   |   |   |   |--- class: 0
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- min_block_size <= 425.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  425.50
+|   |   |   |--- fs_shared_count <= 4.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  4.50
+|   |   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- sum_block_weight <= 1.12
+|   |   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  1.12
+|   |   |   |   |--- fs_total_jaccard <= 0.22
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_total_jaccard >  0.22
+|   |   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- sum_block_weight <= 0.95
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.95
+|   |   |   |   |   |--- class: 0
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_strong_family <= 0.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- has_strong_family >  0.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_depth6_leaf50
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- fs_total_jaccard <= 0.30
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.30
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- sum_block_weight <= 0.75
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.75
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- min_block_size <= 295.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  295.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- fs_shared_count <= 7.50
+|   |   |   |--- min_block_size <= 165.00
+|   |   |   |   |--- fs_total_jaccard <= 0.65
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.65
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  165.00
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- fs_shared_count >  7.50
+|   |   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.46
+|   |   |   |   |--- fs_shared_count <= 9.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  9.50
+|   |   |   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- fs_total_jaccard <= 0.40
+|   |   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_total_jaccard >  0.40
+|   |   |   |   |--- fs_total_jaccard <= 0.44
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_total_jaccard >  0.44
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- sum_block_weight <= 0.95
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.95
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |--- geo_total_jaccard <= 0.75
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- geo_total_jaccard >  0.75
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+
+
+====================================================================================================
+tree_depth6_leaf200
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- fs_total_jaccard <= 0.30
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.30
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- sum_block_weight <= 0.75
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.75
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- min_block_size <= 295.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  295.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- fs_shared_count <= 7.50
+|   |   |   |--- min_block_size <= 165.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  165.00
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- fs_shared_count >  7.50
+|   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- fs_total_jaccard <= 0.40
+|   |   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_total_jaccard >  0.40
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- sum_block_weight <= 0.95
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.95
+|   |   |   |   |   |--- class: 0
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |--- sum_block_weight <= 1.17
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  1.17
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+
+
+====================================================================================================
+tree_depth6_leaf1000
+selected_threshold=0.9
+|--- sum_block_weight <= 0.94
+|   |--- fs_total_jaccard <= 0.42
+|   |   |--- geo_total_jaccard <= 0.18
+|   |   |   |--- min_block_size <= 30.50
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  30.50
+|   |   |   |   |--- fs_total_jaccard <= 0.30
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.30
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- geo_total_jaccard >  0.18
+|   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |--- sum_block_weight <= 0.75
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.75
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |--- min_block_size <= 295.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  295.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- fs_total_jaccard >  0.42
+|   |   |--- min_block_size <= 425.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  425.50
+|   |   |   |--- fs_shared_count <= 4.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  4.50
+|   |   |   |   |--- class: 1
+|--- sum_block_weight >  0.94
+|   |--- n_block_rules <= 6.50
+|   |   |--- min_block_size <= 393.50
+|   |   |   |--- sum_block_weight <= 1.12
+|   |   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- sum_block_weight >  1.12
+|   |   |   |   |--- fs_total_jaccard <= 0.22
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.22
+|   |   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  393.50
+|   |   |   |--- min_block_size <= 397.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  397.00
+|   |   |   |   |--- sum_block_weight <= 0.95
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.95
+|   |   |   |   |   |--- class: 0
+|   |--- n_block_rules >  6.50
+|   |   |--- sum_block_weight <= 1.17
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  1.17
+|   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+
+
+====================================================================================================
+tree_guardrail_depth2_leaf50
+selected_threshold=0.6
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- class: 1
+|   |--- min_block_size >  33.50
+|   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- class: 0
+
+
+====================================================================================================
+tree_guardrail_depth2_leaf200
+selected_threshold=0.6
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- class: 1
+|   |--- min_block_size >  33.50
+|   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- class: 0
+
+
+====================================================================================================
+tree_guardrail_depth2_leaf1000
+selected_threshold=0.6
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- class: 1
+|   |--- min_block_size >  33.50
+|   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- class: 0
+
+
+====================================================================================================
+tree_guardrail_depth3_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- class: 0
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth3_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- class: 0
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth3_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- class: 0
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth4_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- fs_total_jaccard <= 0.06
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.06
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth4_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- fs_total_jaccard <= 0.06
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.06
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth4_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 433.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  433.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth5_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- fs_total_jaccard <= 0.06
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.06
+|   |   |   |   |--- has_context <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- has_context >  0.50
+|   |   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 28.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  28.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 88.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- min_block_size >  88.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- min_block_size <= 15.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  15.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.31
+|   |   |   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- sum_block_weight <= 0.48
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.48
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- fs_total_jaccard <= 0.36
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.36
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth5_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- fs_total_jaccard <= 0.06
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.06
+|   |   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 28.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  28.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 88.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- min_block_size >  88.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- fs_total_jaccard <= 0.02
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_total_jaccard >  0.02
+|   |   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- min_block_size <= 15.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  15.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.31
+|   |   |   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- sum_block_weight <= 0.48
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.48
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth5_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- sum_block_weight <= 0.52
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.52
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.12
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.12
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 88.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- min_block_size >  88.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- n_block_families <= 2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- n_block_families >  2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- min_block_size <= 151.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- min_block_size >  151.00
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- min_block_size <= 74.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  74.50
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 433.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  433.50
+|   |   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth6_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- fs_total_jaccard <= 0.06
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.06
+|   |   |   |   |--- has_context <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- has_context >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 28.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  28.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 88.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  88.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- min_block_size <= 15.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  15.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.31
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- sum_block_weight <= 0.48
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.48
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- fs_total_jaccard <= 0.36
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.36
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- n_block_rules <= 2.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- n_block_rules >  2.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+
+
+====================================================================================================
+tree_guardrail_depth6_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- fs_total_jaccard <= 0.06
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.06
+|   |   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 28.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  28.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 88.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  88.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- fs_total_jaccard <= 0.02
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_total_jaccard >  0.02
+|   |   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- min_block_size <= 15.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  15.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.31
+|   |   |   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- sum_block_weight <= 0.48
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.48
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_depth6_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 33.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- sum_block_weight <= 0.52
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.52
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.12
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.12
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- min_block_size >  33.50
+|   |   |--- min_block_size <= 526.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- min_block_size <= 88.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  88.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  526.50
+|   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- n_block_families <= 2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- n_block_families >  2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- min_block_size <= 151.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- min_block_size >  151.00
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- min_block_size <= 74.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  74.50
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 433.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  433.50
+|   |   |   |   |--- fs_total_jaccard <= 0.23
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.23
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth2_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- class: 0
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth2_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- class: 0
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth2_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- class: 0
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth3_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 3.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  3.50
+|   |   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth3_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 3.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  3.50
+|   |   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth3_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth4_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 3.50
+|   |   |   |--- geo_total_jaccard <= 0.13
+|   |   |   |   |--- class: 0
+|   |   |   |--- geo_total_jaccard >  0.13
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  3.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth4_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 3.50
+|   |   |   |--- fs_shared_count <= 2.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  2.50
+|   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  3.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth4_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 433.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  433.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth5_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 3.50
+|   |   |   |--- geo_total_jaccard <= 0.13
+|   |   |   |   |--- class: 0
+|   |   |   |--- geo_total_jaccard >  0.13
+|   |   |   |   |--- fs_shared_count <= 2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  2.50
+|   |   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  3.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- fs_shared_count <= 4.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  4.50
+|   |   |   |   |   |--- class: 0
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.05
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.05
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- fs_shared_count <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_shared_count >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- min_block_size <= 15.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  15.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.31
+|   |   |   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- sum_block_weight <= 0.48
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.48
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- fs_total_jaccard <= 0.36
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.36
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth5_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 3.50
+|   |   |   |--- fs_shared_count <= 2.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  2.50
+|   |   |   |   |--- sum_block_weight <= 3.99
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  3.99
+|   |   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  3.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- fs_shared_count <= 4.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  4.50
+|   |   |   |   |   |--- class: 0
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.05
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.05
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- fs_total_jaccard <= 0.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- min_block_size <= 15.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  15.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.31
+|   |   |   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- sum_block_weight <= 0.48
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.48
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth5_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.05
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.05
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- fs_shared_count <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_shared_count >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- class: 0
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- n_block_families <= 2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- n_block_families >  2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- min_block_size <= 151.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- min_block_size >  151.00
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- min_block_size <= 74.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  74.50
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 433.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  433.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth6_leaf50
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 3.50
+|   |   |   |--- geo_total_jaccard <= 0.13
+|   |   |   |   |--- class: 0
+|   |   |   |--- geo_total_jaccard >  0.13
+|   |   |   |   |--- fs_shared_count <= 2.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  2.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- min_block_size >  3.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- fs_shared_count <= 4.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  4.50
+|   |   |   |   |   |--- class: 0
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.05
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.05
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- n_block_rules <= 1.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- n_block_rules >  1.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- min_block_size <= 15.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  15.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.31
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- sum_block_weight <= 0.48
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.48
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- fs_total_jaccard <= 0.36
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.36
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth6_leaf200
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 3.50
+|   |   |   |--- fs_shared_count <= 2.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_shared_count >  2.50
+|   |   |   |   |--- sum_block_weight <= 3.99
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- sum_block_weight >  3.99
+|   |   |   |   |   |--- class: 1
+|   |   |--- min_block_size >  3.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- fs_shared_count <= 4.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  4.50
+|   |   |   |   |   |--- class: 0
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.05
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.05
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- fs_shared_count <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- min_block_size <= 15.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  15.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.31
+|   |   |   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- sum_block_weight <= 0.48
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.48
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 425.50
+|   |   |   |   |--- sum_block_weight <= 0.32
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- sum_block_weight >  0.32
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  425.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- fs_shared_count <= 5.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  5.50
+|   |   |   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_guardrail_smallblock2_depth6_leaf1000
+selected_threshold=0.9
+|--- fs_total_jaccard <= 0.22
+|   |--- min_block_size <= 10.50
+|   |   |--- min_block_size <= 4.50
+|   |   |   |--- class: 1
+|   |   |--- min_block_size >  4.50
+|   |   |   |--- has_behavior <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior >  0.50
+|   |   |   |   |--- class: 1
+|   |--- min_block_size >  10.50
+|   |   |--- min_block_size <= 88.50
+|   |   |   |--- fs_shared_count <= 1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.05
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.05
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- fs_shared_count >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 0
+|   |   |--- min_block_size >  88.50
+|   |   |   |--- min_block_size <= 531.00
+|   |   |   |   |--- fs_shared_count <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  531.00
+|   |   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |   |--- truncated branch of depth 2
+|--- fs_total_jaccard >  0.22
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.33
+|   |   |   |--- min_block_size <= 102.50
+|   |   |   |   |--- n_block_families <= 2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- n_block_families >  2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- min_block_size >  102.50
+|   |   |   |   |--- min_block_size <= 151.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- min_block_size >  151.00
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.33
+|   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |--- class: 1
+|   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |--- min_block_size <= 74.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  74.50
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- min_block_size <= 433.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- min_block_size >  433.50
+|   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1

@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 34px Arial, sans-serif; fill: #111827; }
+      .subtitle { font: 400 18px Arial, sans-serif; fill: #4b5563; }
+      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 12; }
+      .blue { fill: #eff6ff; stroke: #2563eb; }
+      .orange { fill: #fff7ed; stroke: #f97316; }
+      .green { fill: #ecfdf5; stroke: #16a34a; }
+      .purple { fill: #f5f3ff; stroke: #7c3aed; }
+      .red { fill: #fef2f2; stroke: #dc2626; }
+      .note { fill: #fffbeb; stroke: #f59e0b; }
+      .head { font: 700 19px Arial, sans-serif; fill: #111827; }
+      .text { font: 400 15px Arial, sans-serif; fill: #374151; }
+      .small { font: 400 13px Arial, sans-serif; fill: #4b5563; }
+      .mono { font: 400 14px Consolas, monospace; fill: #1f2937; }
+      .arrow { stroke: #64748b; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .dash { stroke: #f59e0b; stroke-width: 2.5; stroke-dasharray: 8 7; fill: none; marker-end: url(#warnhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#64748b"/>
+    </marker>
+    <marker id="warnhead" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="920"/>
+
+  <text class="title" x="60" y="58">Graph + Decision Tree Entity Resolution</text>
+  <text class="subtitle" x="60" y="88">Последовательность работы: blocking → пары-кандидаты → признаки пары → дерево → граф → метрики</text>
+
+  <!-- Row 1 -->
+  <rect class="box blue" x="60" y="130" width="290" height="155"/>
+  <text class="head" x="82" y="166">1. Входные артефакты</text>
+  <text class="mono" x="82" y="198">profile_core</text>
+  <text class="mono" x="82" y="224">profile_value_summary_long</text>
+  <text class="mono" x="82" y="250">blocking_index</text>
+  <text class="mono" x="82" y="276">recommended_blocking_rules</text>
+
+  <rect class="box blue" x="420" y="130" width="290" height="155"/>
+  <text class="head" x="442" y="166">2. Split по entity_id</text>
+  <text class="text" x="442" y="202">Разделяем клиентов на valid/test</text>
+  <text class="text" x="442" y="228">по entity_id, а не profile_id</text>
+  <text class="small" x="442" y="260">Так профили одного клиента</text>
+  <text class="small" x="442" y="280">не протекают между split</text>
+
+  <rect class="box orange" x="780" y="130" width="290" height="155"/>
+  <text class="head" x="802" y="166">3. Recommended rules</text>
+  <text class="text" x="802" y="202">Оставляем только выбранные</text>
+  <text class="text" x="802" y="228">blocking-правила</text>
+  <text class="small" x="802" y="260">Граф увидит только пары,</text>
+  <text class="small" x="802" y="280">которые пришли из этих правил</text>
+
+  <rect class="box orange" x="1140" y="130" width="330" height="155"/>
+  <text class="head" x="1162" y="166">4. Размер и вес блока</text>
+  <text class="mono" x="1162" y="202">block_size = count(profile_id)</text>
+  <text class="mono" x="1162" y="228">block_weight = 1 / log1p(size)</text>
+  <text class="small" x="1162" y="260">Маленький блок = более точный сигнал</text>
+
+  <!-- Row 2 -->
+  <rect class="box green" x="1140" y="380" width="330" height="160"/>
+  <text class="head" x="1162" y="416">5. Candidate pairs</text>
+  <text class="text" x="1162" y="452">Внутри каждого блока строим</text>
+  <text class="text" x="1162" y="478">все пары профилей</text>
+  <text class="mono" x="1162" y="512">P1,P2,P3 → P1-P2, P1-P3, P2-P3</text>
+
+  <rect class="box green" x="780" y="380" width="290" height="160"/>
+  <text class="head" x="802" y="416">6. Evidence + similarity</text>
+  <text class="mono" x="802" y="450">n_block_rules</text>
+  <text class="mono" x="802" y="474">min_block_size</text>
+  <text class="mono" x="802" y="498">fs/geo Jaccard</text>
+  <text class="mono" x="802" y="522">email / phone match</text>
+
+  <rect class="box purple" x="420" y="380" width="290" height="160"/>
+  <text class="head" x="442" y="416">7. Decision Tree</text>
+  <text class="text" x="442" y="452">Дерево решает для пары:</text>
+  <text class="mono" x="442" y="482">ставить ли ребро?</text>
+  <text class="small" x="442" y="516">Это edge policy,</text>
+  <text class="small" x="442" y="536">а не назначение entity_id</text>
+
+  <rect class="box purple" x="60" y="380" width="290" height="160"/>
+  <text class="head" x="82" y="416">8. Threshold + mutual top-K</text>
+  <text class="text" x="82" y="452">Threshold выбираем на valid</text>
+  <text class="text" x="82" y="478">Mutual top-K оставляет</text>
+  <text class="text" x="82" y="504">взаимно сильные связи</text>
+  <text class="mono" x="82" y="532">GRAPH_TOP_K = 1</text>
+
+  <!-- Row 3 -->
+  <rect class="box red" x="420" y="650" width="290" height="160"/>
+  <text class="head" x="442" y="686">9. NetworkX graph</text>
+  <text class="text" x="442" y="722">profile_id = вершины</text>
+  <text class="text" x="442" y="748">edge = разрешённая склейка</text>
+  <text class="text" x="442" y="774">component = найденный клиент</text>
+
+  <rect class="box red" x="780" y="650" width="290" height="160"/>
+  <text class="head" x="802" y="686">10. Сравнение с entity_id</text>
+  <text class="text" x="802" y="722">Компоненты графа сравниваем</text>
+  <text class="text" x="802" y="748">с настоящими клиентами</text>
+  <text class="small" x="802" y="780">entity_id используется только для оценки</text>
+
+  <rect class="box red" x="1140" y="650" width="330" height="160"/>
+  <text class="head" x="1162" y="686">11. Итоговые метрики</text>
+  <text class="text" x="1162" y="722">Нашли / пропустили дубли</text>
+  <text class="text" x="1162" y="748">Новых оставили новыми</text>
+  <text class="text" x="1162" y="774">Ошибочные склейки</text>
+  <text class="text" x="1162" y="800">Рёбра и группы графа</text>
+
+  <rect class="box note" x="60" y="650" width="290" height="160"/>
+  <text class="head" x="82" y="686">Ключевое ограничение</text>
+  <text class="text" x="82" y="722">Если настоящая пара не попала</text>
+  <text class="text" x="82" y="748">в candidate pairs через blocking,</text>
+  <text class="text" x="82" y="774">дерево и граф её уже не увидят</text>
+
+  <!-- Sequential arrows -->
+  <path class="arrow" d="M350 208 L420 208"/>
+  <path class="arrow" d="M710 208 L780 208"/>
+  <path class="arrow" d="M1070 208 L1140 208"/>
+  <path class="arrow" d="M1305 285 L1305 380"/>
+  <path class="arrow" d="M1140 460 L1070 460"/>
+  <path class="arrow" d="M780 460 L710 460"/>
+  <path class="arrow" d="M420 460 L350 460"/>
+  <path class="arrow" d="M205 540 C205 605, 360 608, 500 650"/>
+  <path class="arrow" d="M710 730 L780 730"/>
+  <path class="arrow" d="M1070 730 L1140 730"/>
+
+  <!-- Blocking limitation note -->
+  <path class="dash" d="M925 285 C740 585, 360 595, 205 650"/>
+</svg>
