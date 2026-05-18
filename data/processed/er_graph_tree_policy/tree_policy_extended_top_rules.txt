@@ -1,0 +1,158 @@
+====================================================================================================
+extended_depth6_leaf50
+|--- score <= 0.74
+|   |--- candidate_degree_max <= 225.50
+|   |   |--- mean_block_weight <= 0.22
+|   |   |   |--- score_margin_l <= 0.83
+|   |   |   |   |--- max_block_size <= 429.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- max_block_size >  429.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- score_margin_l >  0.83
+|   |   |   |   |--- sum_block_weight <= 0.17
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.17
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- mean_block_weight >  0.22
+|   |   |   |--- n_behavior_context_device_rules <= 1.50
+|   |   |   |   |--- score_margin_r <= 1.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- score_margin_r >  1.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- n_behavior_context_device_rules >  1.50
+|   |   |   |   |--- class: 0
+|   |--- candidate_degree_max >  225.50
+|   |   |--- score_rank_r <= 6.50
+|   |   |   |--- std_block_size <= 87.49
+|   |   |   |   |--- class: 0
+|   |   |   |--- std_block_size >  87.49
+|   |   |   |   |--- candidate_degree_max <= 530.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- candidate_degree_max >  530.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- score_rank_r >  6.50
+|   |   |   |--- share_large_blocks_gt100 <= 1.95
+|   |   |   |   |--- score_margin_l <= 0.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- score_margin_l >  0.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- share_large_blocks_gt100 >  1.95
+|   |   |   |   |--- candidate_degree_max <= 623.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- candidate_degree_max >  623.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|--- score >  0.74
+|   |--- min_block_size <= 345.50
+|   |   |--- score_margin_min <= 0.01
+|   |   |   |--- sum_block_weight <= 0.33
+|   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.33
+|   |   |   |   |--- score_margin_min <= 0.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- score_margin_min >  0.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- score_margin_min >  0.01
+|   |   |   |--- mean_block_weight <= 0.20
+|   |   |   |   |--- fs_total_jaccard <= 0.54
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.54
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- mean_block_weight >  0.20
+|   |   |   |   |--- n_block_rules <= 10.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- n_block_rules >  10.50
+|   |   |   |   |   |--- class: 0
+|   |--- min_block_size >  345.50
+|   |   |--- score_margin_r <= 0.00
+|   |   |   |--- fs_total_jaccard <= 0.37
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.37
+|   |   |   |   |--- score_margin_l <= 0.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- score_margin_l >  0.00
+|   |   |   |   |   |--- class: 0
+|   |   |--- score_margin_r >  0.00
+|   |   |   |--- has_behavior_context <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- has_behavior_context >  0.50
+|   |   |   |   |--- class: 0
+
+
+====================================================================================================
+extended_depth6_leaf200
+|--- score <= 0.74
+|   |--- candidate_degree_max <= 225.50
+|   |   |--- mean_block_weight <= 0.22
+|   |   |   |--- score_margin_l <= 0.83
+|   |   |   |   |--- max_block_size <= 429.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- max_block_size >  429.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- score_margin_l >  0.83
+|   |   |   |   |--- sum_block_weight <= 0.17
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.17
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- mean_block_weight >  0.22
+|   |   |   |--- n_behavior_context_device_rules <= 1.50
+|   |   |   |   |--- fs_shared_count <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_shared_count >  0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- n_behavior_context_device_rules >  1.50
+|   |   |   |   |--- class: 0
+|   |--- candidate_degree_max >  225.50
+|   |   |--- score_rank_r <= 6.50
+|   |   |   |--- std_block_size <= 87.49
+|   |   |   |   |--- class: 0
+|   |   |   |--- std_block_size >  87.49
+|   |   |   |   |--- candidate_degree_max <= 530.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- candidate_degree_max >  530.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- score_rank_r >  6.50
+|   |   |   |--- share_large_blocks_gt100 <= 1.95
+|   |   |   |   |--- score_margin_l <= 0.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- score_margin_l >  0.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- share_large_blocks_gt100 >  1.95
+|   |   |   |   |--- candidate_degree_max <= 623.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- candidate_degree_max >  623.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|--- score >  0.74
+|   |--- min_block_size <= 345.50
+|   |   |--- score_margin_min <= 0.01
+|   |   |   |--- score_margin_min <= 0.00
+|   |   |   |   |--- fs_total_jaccard <= 0.38
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.38
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- score_margin_min >  0.00
+|   |   |   |   |--- min_block_size <= 165.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  165.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- score_margin_min >  0.01
+|   |   |   |--- mean_block_weight <= 0.20
+|   |   |   |   |--- fs_total_jaccard <= 0.45
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- fs_total_jaccard >  0.45
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- mean_block_weight >  0.20
+|   |   |   |   |--- n_block_rules <= 10.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- n_block_rules >  10.50
+|   |   |   |   |   |--- class: 0
+|   |--- min_block_size >  345.50
+|   |   |--- score_margin_r <= 0.00
+|   |   |   |--- fs_total_jaccard <= 0.37
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_total_jaccard >  0.37
+|   |   |   |   |--- class: 1
+|   |   |--- score_margin_r >  0.00
+|   |   |   |--- candidate_degree_r <= 127.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- candidate_degree_r >  127.50
+|   |   |   |   |--- class: 0

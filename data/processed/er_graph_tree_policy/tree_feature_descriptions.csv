@@ -1,0 +1,20 @@
+feature,description
+n_block_rules,"число разных block_rule, через которые пара была найдена"
+n_block_families,"число разных block_family, подтвердивших пару"
+min_block_size,самый маленький размер блока среди сработавших правил
+sum_block_weight,сумма весов блоков; маленькие блоки дают больший вес
+hit_coverage_fallback,"флаг, что сработал технический fallback"
+is_fallback_only,пара найдена только fallback-правилом
+has_non_fallback_signal,есть хотя бы один сигнал кроме fallback
+has_strong_family,сработало сильное семейство правил
+has_behavior,сработало одиночное behavior-правило
+has_behavior_context,сработало behavior_context или behavior_context_device
+has_context,сработало context-правило
+has_coverage_compound,сработало coverage_compound-правило
+only_weak_families,все сработавшие семейства входят в WEAK_FAMILIES
+fs_total_jaccard,общий Jaccard по выбранным fs-значениям
+geo_total_jaccard,общий Jaccard по geo/context значениям
+fs_shared_count,суммарное число общих fs-значений
+identity_email_match,у пары совпал email
+identity_phone_match,у пары совпал phone
+identity_strong_match,совпал email или phone

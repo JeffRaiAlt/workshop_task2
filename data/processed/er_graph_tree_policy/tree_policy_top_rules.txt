@@ -1,0 +1,116 @@
+====================================================================================================
+tree_conservative_depth3_leaf50
+|--- score <= 0.74
+|   |--- min_block_size <= 33.50
+|   |   |--- score <= 0.04
+|   |   |   |--- class: 0
+|   |   |--- score >  0.04
+|   |   |   |--- class: 1
+|   |--- min_block_size >  33.50
+|   |   |--- sum_block_weight <= 0.16
+|   |   |   |--- class: 0
+|   |   |--- sum_block_weight >  0.16
+|   |   |   |--- class: 0
+|--- score >  0.74
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |--- class: 1
+|   |   |--- fs_total_jaccard >  0.31
+|   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- class: 1
+
+
+====================================================================================================
+tree_balanced_depth6_leaf200
+|--- score <= 0.74
+|   |--- min_block_size <= 33.50
+|   |   |--- score <= 0.04
+|   |   |   |--- sum_block_weight <= 0.52
+|   |   |   |   |--- fs_total_jaccard <= 0.07
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.07
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.52
+|   |   |   |   |--- n_block_rules <= 1.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- n_block_rules >  1.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- score >  0.04
+|   |   |   |--- n_block_rules <= 7.50
+|   |   |   |   |--- fs_total_jaccard <= 0.20
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.20
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- n_block_rules >  7.50
+|   |   |   |   |--- class: 0
+|   |--- min_block_size >  33.50
+|   |   |--- sum_block_weight <= 0.16
+|   |   |   |--- sum_block_weight <= 0.15
+|   |   |   |   |--- min_block_size <= 981.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  981.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- sum_block_weight >  0.15
+|   |   |   |   |--- min_block_size <= 598.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- min_block_size >  598.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- sum_block_weight >  0.16
+|   |   |   |--- n_block_rules <= 1.50
+|   |   |   |   |--- sum_block_weight <= 0.22
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- sum_block_weight >  0.22
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- n_block_rules >  1.50
+|   |   |   |   |--- fs_total_jaccard <= 0.41
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fs_total_jaccard >  0.41
+|   |   |   |   |   |--- truncated branch of depth 2
+|--- score >  0.74
+|   |--- min_block_size <= 345.50
+|   |   |--- fs_total_jaccard <= 0.31
+|   |   |   |--- min_block_size <= 156.50
+|   |   |   |   |--- min_block_size <= 6.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  6.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- min_block_size >  156.50
+|   |   |   |   |--- n_block_rules <= 2.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- n_block_rules >  2.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.31
+|   |   |   |--- score <= 0.99
+|   |   |   |   |--- min_block_size <= 151.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  151.00
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- score >  0.99
+|   |   |   |   |--- min_block_size <= 130.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- min_block_size >  130.50
+|   |   |   |   |   |--- class: 1
+|   |--- min_block_size >  345.50
+|   |   |--- fs_total_jaccard <= 0.46
+|   |   |   |--- score <= 1.00
+|   |   |   |   |--- has_coverage_compound <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- has_coverage_compound >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- score >  1.00
+|   |   |   |   |--- min_block_size <= 822.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- min_block_size >  822.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- fs_total_jaccard >  0.46
+|   |   |   |--- fs_shared_count <= 3.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- fs_shared_count >  3.50
+|   |   |   |   |--- score <= 1.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- score >  1.00
+|   |   |   |   |   |--- truncated branch of depth 2
