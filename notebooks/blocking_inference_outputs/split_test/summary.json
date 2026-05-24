@@ -1,0 +1,26 @@
+{
+  "split": "test",
+  "n_profiles": 12384,
+  "n_entities": 10674,
+  "event_batch_size": 200000,
+  "save_only_current_split_pairs": true,
+  "save_only_above_threshold": false,
+  "n_candidate_pairs": 2812699,
+  "n_current_pairs": 2812699,
+  "n_quality_gated_pairs": 113066,
+  "n_candidate_positive_pairs": 12885,
+  "n_total_true_pairs_in_split": 2416,
+  "n_saved_rows": 2812699,
+  "n_saved_files": 16,
+  "metrics": {
+    "TP": 1991,
+    "FP": 8691,
+    "FN": 10894,
+    "TN": 2791123,
+    "precision": 0.18638831679460774,
+    "recall_vs_candidates": 0.15452076057431122,
+    "blocking_pair_recall": 5.333195364238411,
+    "quality_gate_recall_vs_all_true_pairs": 1.0,
+    "f1_score": 0.16896507828743582
+  }
+}

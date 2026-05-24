@@ -1,0 +1,17 @@
+{
+  "split": "validation",
+  "n_profiles": 12474,
+  "n_total_pairs": 77794101,
+  "pair_batch_size": 200000,
+  "n_saved_rows": 77794101,
+  "n_saved_files": 389,
+  "metrics": {
+    "TP": 3637,
+    "FP": 515,
+    "FN": 4828,
+    "TN": 77785121,
+    "precision": 0.8759633911368016,
+    "recall": 0.42965150620200826,
+    "f1_score": 0.5765237378140604
+  }
+}

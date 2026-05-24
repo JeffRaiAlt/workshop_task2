@@ -1,0 +1,11 @@
+{
+  "input": "../data/raw/split_label_train_V3.snappy.parquet",
+  "raw_rows": 68036,
+  "profile_rows": 61927,
+  "entity_count": 53369,
+  "flat_columns": 32,
+  "non_processing_long_rows": 309627,
+  "fs_long_rows": 1189416,
+  "realtime_long_rows": 450144,
+  "output_dir": "../data/raw/prepared_entity_resolution_v2"
+}

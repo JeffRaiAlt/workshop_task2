@@ -1,20 +1,20 @@
 {
   "train_metrics": {
-    "roc_auc": 0.9955684797095523,
-    "pr_auc": 0.9859970000439983,
-    "n_train_pairs": 55968,
-    "n_val_pairs": 13992,
+    "roc_auc": 0.9956417939201477,
+    "pr_auc": 0.9857900476268495,
+    "n_train_pairs": 55886,
+    "n_val_pairs": 13972,
     "n_features": 240
   },
   "validation_metrics": {
-    "roc_auc": 0.9953893069586711,
-    "pr_auc": 0.938157794830615,
-    "n_pairs": 239976
+    "roc_auc": 0.9955755030590114,
+    "pr_auc": 0.9412100527348075,
+    "n_pairs": 240008
   },
   "test_metrics": {
-    "roc_auc": 0.9930035161056792,
-    "pr_auc": 0.9128108584915067,
-    "n_pairs": 266504
+    "roc_auc": 0.9934246108570216,
+    "pr_auc": 0.9144327456153584,
+    "n_pairs": 266458
   },
   "config": {
     "attribute_cols": {

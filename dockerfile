@@ -16,8 +16,7 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Устанавливаем Python зависимости
-RUN pip install --no-cache-dir -r requirements.txt
-
+RUN pip install --no-cache-dir --timeout=1000 --retries=5 -r requirements.txt
 # Копируем весь проект
 COPY . .
 

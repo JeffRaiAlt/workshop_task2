@@ -33,6 +33,8 @@ ENV/
 artifacts/*.pkl
 artifacts/*.cbm
 artifacts/*.pt
+artifacts/df.csv
+artifacts/profiles.csv
 !artifacts/.gitkeep
 *.parquet
 *.csv
@@ -47,7 +49,12 @@ output/
 .pytest_cache/
 .coverage
 htmlcov/
+notebooks/all_pairs_for_split/
+notebooks/all_pairs_for_split_catbost_only/
+notebooks/full_pairs_whithin_split/
+notebooks/catboost_info/
+notebooks/output/
 
-# OS
+# OSa
 Thumbs.db
 Desktop.ini
