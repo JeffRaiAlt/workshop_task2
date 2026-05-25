@@ -1,7 +1,7 @@
 import pandas as pd
 
-from preprocess import prepare_input_df
-from pipeline import run_inference_pipeline, artifacts_status as _artifacts_status
+from core.preprocess import prepare_input_df
+from core.pipeline import run_inference_pipeline, artifacts_status as _artifacts_status
 
 
 def artifacts_status():

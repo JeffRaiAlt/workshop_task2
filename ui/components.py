@@ -1,18 +1,22 @@
 import streamlit as st
 import pandas as pd
 
-
 def render_file_uploader() -> pd.DataFrame | None:
     uploaded_file = st.file_uploader(
-        "Загрузите CSV-файл",
-        type=["csv"],
+        "Загрузите parquet-файл",
+        type=["parquet"],
     )
 
     if uploaded_file is None:
         return None
 
-    return pd.read_csv(uploaded_file)
+    try:
+        df = pd.read_parquet(uploaded_file)
+    except Exception as exc:
+        st.error(f"Не удалось прочитать parquet: {exc}")
+        return None
 
+    return df
 
 def render_inference_controls() -> tuple[str, float]:
     mode = st.selectbox(

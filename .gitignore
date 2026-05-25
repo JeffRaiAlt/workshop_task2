@@ -14,7 +14,7 @@ ENV/
 
 # Jupyter Notebook
 .ipynb_checkpoints
-*.ipynb
+#.ipynb
 
 # Docker
 *.log
@@ -51,7 +51,7 @@ output/
 htmlcov/
 notebooks/all_pairs_for_split/
 notebooks/all_pairs_for_split_catbost_only/
-notebooks/full_pairs_whithin_split/
+notebooks/full_pairs_within_split/
 notebooks/catboost_info/
 notebooks/output/
 
