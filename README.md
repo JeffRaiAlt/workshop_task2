@@ -6,6 +6,10 @@
 
 Проект строит пайплайн сопоставления профилей, в котором данные сначала нормализуются и извлекаются из вложенных полей, затем агрегируются на уровне `profile_id`, после чего формируются кандидаты на совпадение и рассчитывается score вероятности того, что два профиля принадлежат одному человеку.
 
+Важно! Так получилось, что в проекте реализованы два pipeline: исходная модель `GraphSAGE + CatBoost` и 
+модель `витрина + 
+blocking + XGBoost + граф` из каталога `src/`.
+
 В обучающем ноутбуке используется гетерогенный граф по связям профиля с атрибутами: `domain`, `phone`, `device`, `city` и `region`. Затем обучается GraphSAGE, создаются эмбеддинги профилей, генерируются кандидатные пары и обучается CatBoost на pairwise-признаках.
 
 В production-коде инференс работает через набор артефактов в директории `artifacts/`: 
@@ -118,3 +122,116 @@ docker-compose up --build
 3. Настроить параметры анализа (режим обработки, порог score, количество строк)
 4. Запустить обработку
 5. Получить таблицу пар `profile_id_1`, `profile_id_2`, `score` и сопутствующий Markdown-отчет
+
+## Pipeline `Graph_Table`: витрина, blocking, XGBoost и граф
+
+### Файлы
+
+| Путь | Назначение |
+|---|---|
+| `notebooks/03_build_er_profile_mart_multivalue.ipynb` | Витрина и blocking-правила |
+| `src/build_graph_table_artifacts.py` | Обучение модели и сборка артефактов |
+| `src/run_graph_table_inference.py` | Инференс и HTML-отчёт |
+| `src/run_graph_table_threshold_sweep.py` | Проверка порогов |
+| `src/build_graph_table_shap_report.py` | SHAP-отчёт |
+| `src/streamlit_graph_table_inference.py` | Интерфейс инференса |
+
+### Архитектура
+
+1. Ноутбук `03_build_er_profile_mart_multivalue.ipynb` собирает значения
+   признаков по `profile_id` и создаёт `blocking_index`.
+2. `recommended_blocking_rules.csv` задаёт правила, по которым профили
+   попадают в пары-кандидаты.
+3. `build_graph_table_artifacts.py` формирует обучающие пары: положительные
+   пары имеют один `entity_id`, отрицательные пары имеют разные `entity_id`.
+4. Для пары рассчитываются совпадения значений и признаки сработавших
+   blocking-правил.
+5. XGBoost обучается оценивать вероятность совпадения двух профилей.
+6. При инференсе входные профили сопоставляются с историческим
+   `blocking_index`, и модель оценивает только найденные пары-кандидаты.
+7. Пары выше порога проходят правило `graph_top_k` и становятся рёбрами
+   графа; связанные профили образуют группы для объединения.
+
+(Все указанные артефакты снабжены подробными комментариями)
+
+### Запуск
+
+Исходные данные:
+
+```text
+data/split_label_train_V3.snappy.parquet
+```
+
+Собрать витрину:
+
+```powershell
+cd notebooks
+python -m jupyter nbconvert --to notebook --execute --inplace 03_build_er_profile_mart_multivalue.ipynb
+cd ..
+```
+
+Обучить модель и собрать артефакты:
+
+```powershell
+python src/build_graph_table_artifacts.py --training-scope train --max-negative-pairs 1000000
+```
+
+Создать тестовый пакет:
+
+```powershell
+python src/make_graph_table_test_packet.py --n-profiles 1000 --entity-split test --existing-share 0.25
+```
+
+Запустить инференс:
+
+```powershell
+python src/run_graph_table_inference.py --input src/graph_table_test_data/raw_packet_test_1000_profiles.parquet
+```
+
+HTML-отчёт сохраняется в:
+
+```text
+reports/graph_table_inference/
+```
+
+Запустить интерфейс:
+
+```powershell
+python -m streamlit run src/streamlit_graph_table_inference.py
+```
+
+### Артефакты
+
+После выполнения ноутбука:
+
+| Файл | Назначение |
+|---|---|
+| `data/processed/er_profile_mart_multivalue/profile_core.parquet` | Профили и разметка |
+| `data/processed/er_profile_mart_multivalue/profile_value_summary_long.parquet` | Значения признаков |
+| `data/processed/er_profile_mart_multivalue/blocking_index.parquet` | Blocking index |
+| `data/processed/er_profile_mart_multivalue/recommended_blocking_rules.csv` | Используемые правила |
+
+После обучения:
+
+| Файл | Назначение |
+|---|---|
+| `src/graph_table_artifacts/graph_edge_model.joblib` | Модель XGBoost |
+| `src/graph_table_artifacts/feature_cols.json` | Признаки модели |
+| `src/graph_table_artifacts/policy_config.json` | Runtime-настройки |
+| `src/graph_table_artifacts/recommended_rule_names.json` | Blocking-правила |
+| `src/graph_table_artifacts/artifact_manifest.json` | Параметры модели |
+| `src/graph_table_artifacts/historical_profile_core.parquet` | Исторические профили |
+| `src/graph_table_artifacts/historical_profile_values.parquet` | Значения исторических профилей |
+| `src/graph_table_artifacts/historical_blocking_index.parquet` | Индекс истории |
+
+`*.parquet` не коммитятся и создаются локально.
+
+### Дополнительные проверки
+
+```powershell
+python src/run_graph_table_threshold_sweep.py --input src/graph_table_test_data/raw_packet_test_1000_profiles.parquet --graph-top-k 1,2,3 --threshold-start 0.0 --threshold-stop 1.0 --threshold-step 0.01
+```
+
+```powershell
+python src/build_graph_table_shap_report.py --pair-scores reports/model_eval/pair_scores_<timestamp>.parquet --packet src/graph_table_test_data/raw_packet_test_1000_profiles.parquet --score-threshold 0.95
+```
