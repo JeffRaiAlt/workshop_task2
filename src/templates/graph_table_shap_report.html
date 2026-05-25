@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>SHAP report</title>
+  <style>
+    body { font-family:Arial, sans-serif; margin:28px; color:#17212b; background:#fff; }
+    h1 { margin-bottom:4px; }
+    h2 { margin-top:30px; }
+    .muted { color:#667382; }
+    .cards { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin:22px 0; }
+    .card { border:1px solid #dfe6ed; border-radius:6px; padding:14px; }
+    .value { font-size:28px; font-weight:700; color:#145c59; }
+    table { border-collapse:collapse; width:100%; font-size:13px; }
+    th,td { text-align:left; padding:9px; border-bottom:1px solid #e5eaf0; vertical-align:top; }
+    th { background:#f5f7fa; }
+    code { font-family:Consolas, monospace; }
+    img { max-width:100%; border:1px solid #e5eaf0; margin-top:10px; }
+    .note { padding:12px; background:#f5f7fa; border-left:4px solid #1b7f79; margin:16px 0; }
+  </style>
+</head>
+<body>
+  <h1>SHAP: что влияет на оценку XGBoost</h1>
+  <p class="muted">Модель: <code>{{ policy_name }}</code> · пакет: <code>{{ packet_name }}</code> · порог: {{ threshold }}</p>
+  <div class="cards">
+    <div class="card"><div class="value">{{ candidate_pairs }}</div><div class="muted">пар-кандидатов</div></div>
+    <div class="card"><div class="value">{{ explained_pairs }}</div><div class="muted">пар объяснено SHAP</div></div>
+    <div class="card"><div class="value">{{ accepted_edges }}</div><div class="muted">связей принято графом</div></div>
+    <div class="card"><div class="value">{{ accepted_precision }}</div><div class="muted">точность принятых связей</div></div>
+  </div>
+  <div class="note">SHAP объясняет <b>оценку XGBoost</b>, а не окончательное объединение само по себе. Финальная связь дополнительно проходит порог и взаимный выбор <code>top-K</code>. При текущих настройках: {{ accepted_text }}.</div>
+  <h2>Главные признаки оценки</h2>
+  <img src="{{ bar_image }}" alt="SHAP feature importance">
+  <table>
+    <thead><tr><th>Признак</th><th>Что означает</th><th>Средняя сила влияния</th><th>Средний вклад у принятых связей</th></tr></thead>
+    <tbody>
+    {% for row in top_rows %}
+      <tr>
+        <td><code>{{ row.feature }}</code></td>
+        <td>{{ row.description }}</td>
+        <td>{{ "%.4f"|format(row.mean_abs_shap_all_pairs) }}</td>
+        <td>{{ "%.4f"|format(row.mean_shap_accepted_edges) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <h2>Направление влияния</h2>
+  <p class="muted">Красные точки - высокое значение признака, синие - низкое. Положение справа повышает оценку совпадения, слева снижает.</p>
+  <img src="{{ beeswarm_image }}" alt="SHAP summary plot">
+</body>
+</html>

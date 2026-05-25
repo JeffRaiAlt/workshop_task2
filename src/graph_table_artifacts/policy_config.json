@@ -1,0 +1,8 @@
+{
+  "graph_top_k": 1,
+  "max_candidate_pairs_per_request": 1500000,
+  "max_history_candidates_per_profile": 300,
+  "model_file": "graph_edge_model.joblib",
+  "policy_name": "xgb_valid_selected_candidate_21",
+  "score_threshold": 0.95
+}

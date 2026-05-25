@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entity Resolution Inference</title>
+  <style>
+    body { margin:0; background:#fff; color:#182230; font-family:Arial, sans-serif; line-height:1.45; }
+    main { max-width:1120px; margin:0 auto; padding:32px 24px 44px; }
+    h1 { margin:0 0 8px; font-size:28px; }
+    h2 { margin:0 0 12px; font-size:18px; }
+    header { border-bottom:1px solid #d9e1ec; padding-bottom:18px; margin-bottom:22px; }
+    .muted { color:#667085; font-size:13px; }
+    .grid { display:grid; gap:16px; }
+    .cards { grid-template-columns:repeat(4, minmax(0, 1fr)); }
+    .two { grid-template-columns:1fr 1fr; margin-top:16px; }
+    .card,.panel { border:1px solid #d9e1ec; background:#f8fafc; border-radius:8px; padding:16px; }
+    .value { font-size:24px; font-weight:750; margin-bottom:4px; }
+    .metric { display:grid; grid-template-columns:170px 1fr 64px; gap:12px; align-items:center; margin:12px 0; }
+    .track { height:12px; background:#e8edf5; border-radius:999px; overflow:hidden; }
+    .fill { display:block; height:100%; border-radius:999px; background:#238b45; }
+    .blue { background:#2f6fed; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:9px 8px; border-bottom:1px solid #e5ebf3; vertical-align:middle; }
+    th { text-align:left; color:#667085; }
+    .num { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+    code { font-family:Consolas, monospace; font-size:12px; }
+    .profile-list { display:flex; flex-direction:column; gap:5px; }
+    tbody tr.group-even { background:#eef4fb; }
+    tbody tr.group-odd { background:#ffffff; }
+    .merge-table-scroll { max-height:330px; overflow-y:auto; border:1px solid #e5ebf3; border-radius:6px; }
+    .merge-table-scroll table { border-collapse:separate; border-spacing:0; }
+    .merge-table-scroll thead th { position:sticky; top:0; z-index:1; background:#f8fafc; }
+    .merge-table-scroll tbody tr:last-child td { border-bottom:0; }
+    @media (max-width:900px) { .cards,.two { grid-template-columns:1fr; } main { padding:22px 16px; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Entity Resolution: результат inference</h1>
+    <div class="muted">model={{ model_mode }} · threshold={{ threshold }} · graph_top_k={{ graph_top_k }} · {{ timestamp }}</div>
+  </header>
+
+  <section class="grid cards">
+    <div class="card"><div class="value">{{ profiles }}</div><div class="muted">профилей в пакете</div></div>
+    <div class="card"><div class="value">{{ candidate_pairs }}</div><div class="muted">пар после блокинга</div></div>
+    <div class="card"><div class="value">{{ accepted_edges }}</div><div class="muted">связей принято в граф</div></div>
+    <div class="card"><div class="value">{{ merge_groups }}</div><div class="muted">групп для объединения</div></div>
+  </section>
+
+  <section class="grid two">
+    <div class="panel">
+      <h2>Результат обработки</h2>
+      <p>Профилей со связями: <b>{{ linked_profiles }}</b></p>
+      <p>Профилей без принятых связей: <b>{{ profiles_without_links }}</b></p>
+      <p class="muted">Каждая принятая группа ниже содержит профили, которые алгоритм предлагает считать одним клиентом.</p>
+    </div>
+    <div class="panel">
+      <h2>Контроль на размеченном тесте</h2>
+      <div class="metric"><span>Существующие найдены</span><div class="track"><span class="fill" style="width:{{ found_pct_bar }}%"></span></div><b>{{ found_pct }}</b></div>
+      <div class="metric"><span>Новые верно</span><div class="track"><span class="fill blue" style="width:{{ new_pct_bar }}%"></span></div><b>{{ new_pct }}</b></div>
+      <p class="muted">Блок показывается только как контроль, если во входном пакете есть entity_id.</p>
+    </div>
+  </section>
+
+  <section class="grid two">
+    <div class="panel">
+      <h2>Качество пар</h2>
+      <p>Precision: <b>{{ pair_precision }}</b></p>
+      <p>Recall: <b>{{ pair_recall }}</b></p>
+      <p>F1: <b>{{ pair_f1 }}</b></p>
+    </div>
+    <div class="panel">
+      <h2>Качество финальных объединений</h2>
+      <p>Precision: <b>{{ final_precision }}</b></p>
+      <p>Recall: <b>{{ final_recall }}</b></p>
+      <p>F1: <b>{{ final_f1 }}</b></p>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:16px;">
+    <h2>Группы профилей для объединения</h2>
+    <div class="merge-table-scroll">
+      <table>
+        <thead><tr><th>Группа</th><th>Профили, отнесённые к одному клиенту</th><th class="num">Макс. оценка связи</th><th>Рекомендация</th></tr></thead>
+        <tbody>
+        {% for row in merge_groups_rows %}
+          <tr class="{{ 'group-odd' if loop.index is odd else 'group-even' }}">
+            <td class="num">{{ row.group_no }}</td>
+            <td><div class="profile-list">{% for profile_id in row.profile_ids %}<code>{{ profile_id }}</code>{% endfor %}</div></td>
+            <td class="num">{{ row.best_match_score }}</td>
+            <td>{{ row.recommendation }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="4" class="muted">В этом пакете групп для объединения не найдено.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:16px;">
+    <h2>Правила, давшие принятые связи</h2>
+    <table>
+      <thead><tr><th>Правило</th><th>Семейство</th><th class="num">Связей</th></tr></thead>
+      <tbody>
+      {% for row in rule_rows %}
+        <tr><td><code>{{ row.block_rule }}</code></td><td>{{ row.block_family }}</td><td class="num">{{ row.pair_count }}</td></tr>
+      {% else %}
+        <tr><td colspan="3" class="muted">Нет принятых связей графа.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+</body>
+</html>
