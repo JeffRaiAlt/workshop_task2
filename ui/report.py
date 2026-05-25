@@ -1,24 +1,27 @@
 import pandas as pd
 
 
-def build_markdown_report(matches: pd.DataFrame) -> str:
-    if matches.empty:
-        return "Совпадения не найдены."
+def build_markdown_report(matches: pd.DataFrame, notes: str = "", mode: str = "table") -> str:
+    lines = ["# 📊 Inference Report", ""]
 
-    lines = [
-        "# Inference report",
-        "",
-        f"Найдено совпадений: {len(matches)}",
-        "",
-    ]
+    if notes:
+        lines += ["## 📋 Параметры запуска", "", notes, ""]
+
+    if matches.empty:
+        lines.append("_Совпадения не найдены._")
+        return "\n".join(lines)
+
+    lines += [f"## 🔗 Найдено совпадений: {len(matches)}", ""]
 
     if "score" in matches.columns:
-        lines.extend(
-            [
-                f"Максимальный score: {matches['score'].max():.4f}",
-                f"Средний score: {matches['score'].mean():.4f}",
-                "",
-            ]
-        )
+        lines += [
+            f"- Максимальный score: **{matches['score'].max():.4f}**",
+            f"- Средний score: **{matches['score'].mean():.4f}**",
+            f"- Минимальный score: **{matches['score'].min():.4f}**",
+            "",
+        ]
+
+    lines += ["## 📄 Пример результатов (первые 20 пар)", ""]
+    lines.append(matches.head(20).to_markdown(index=False))
 
     return "\n".join(lines)

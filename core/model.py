@@ -1,21 +1,17 @@
 import json
-import pickle
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 try:
     from catboost import CatBoostClassifier
-except Exception:
+except ImportError:
     CatBoostClassifier = None
-
 
 ARTIFACTS_DIR = Path(__file__).resolve().parent.parent / "artifacts"
 
 
-
-def artifacts_status():
+def artifacts_status() -> dict:
     expected = [
         'catboost_pair_model.cbm',
         'feature_cols.json',
@@ -31,24 +27,25 @@ def artifacts_status():
 
 def load_feature_cols():
     path = ARTIFACTS_DIR / 'feature_cols.json'
-    if path.exists():
-        with open(path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        if isinstance(data, list):
-            return data
-        if isinstance(data, dict):
-            for key in ['feature_cols', 'features', 'columns']:
-                if key in data and isinstance(data[key], list):
-                    return data[key]
+    if not path.exists():
+        return None
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    if isinstance(data, list):
+        return data
+    if isinstance(data, dict):
+        for key in ('feature_cols', 'features', 'columns'):
+            if key in data and isinstance(data[key], list):
+                return data[key]
     return None
 
 
 def load_catboost_model():
-    model_path = ARTIFACTS_DIR / 'catboost_pair_model.cbm'
-    if not model_path.exists() or CatBoostClassifier is None:
+    path = ARTIFACTS_DIR / 'catboost_pair_model.cbm'
+    if not path.exists() or CatBoostClassifier is None:
         return None
     model = CatBoostClassifier()
-    model.load_model(str(model_path))
+    model.load_model(str(path))
     return model
 
 

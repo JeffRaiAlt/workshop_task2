@@ -1,52 +1,167 @@
+import html
+import io
+import time
+
+import pandas as pd
+import pyarrow.parquet as pq
 import streamlit as st
 
 from services.inference_service import run_inference, artifacts_status
-from ui.components import render_file_uploader, render_inference_controls
 from ui.report import build_markdown_report
 
 
-def main() -> None:
-    st.set_page_config(
-        page_title="Entity Matching Inference",
-        layout="wide",
+def safe_read_parquet(file) -> pd.DataFrame:
+    try:
+        data = file.read()
+        buf = io.BytesIO(data)
+        table = pq.read_table(buf)
+        return table.to_pandas()
+    except Exception as e:
+        raise ValueError(f"Ошибка чтения parquet: {e}")
+
+
+st.set_page_config(page_title="Profile Matching Production App", layout="wide")
+st.title("🎯 Система матчинга и дедупликации профилей клиентов")
+
+with st.expander("📦 Статус артефактов", expanded=True):
+    status = artifacts_status()
+    st.json(status)
+
+tab1, tab2, tab3 = st.tabs(["📁 Загрузка файла", "⚙️ Режим обработки", "📊 Настройки анализа"])
+
+with tab1:
+    uploaded_file = st.file_uploader(
+        "Загрузите файл в формате parquet",
+        type=["parquet"],
+        help="Поддерживаются только .parquet файлы",
     )
 
-    st.title("Entity Matching Inference")
+with tab2:
+    mode_label = st.radio(
+        "Режим обработки",
+        options=["Блокинг", "Графовый"],
+        index=0,
+        horizontal=True,
+        help="Блокинг - быстрый, Графовый - точнее но требует больше ресурсов",
+    )
 
-    status = artifacts_status()
+with tab3:
+    col1, col2 = st.columns(2)
+    with col1:
+        max_rows_input = st.number_input(
+            "Максимальное количество строк для анализа",
+            min_value=10,
+            max_value=500_000,
+            value=5000,
+            step=100,
+            help="Ограничение на количество загружаемых строк",
+        )
+    with col2:
+        score_threshold = st.slider(
+            "Порог score",
+            min_value=0.0,
+            max_value=1.0,
+            value=0.5,
+            step=0.01,
+            help="Минимальный score для включения в результаты",
+        )
 
-    with st.expander("Artifacts status"):
-        st.json(status)
+mode = "graph" if "Графовый" in mode_label else "table"
 
-    input_df = render_file_uploader()
+if uploaded_file is None:
+    st.info("📁 Загрузите parquet-файл во вкладке 'Загрузка файла', чтобы начать.")
+    st.stop()
 
-    if input_df is None:
-        st.info("Загрузите CSV-файл для запуска инференса.")
-        return
+st.write("### 📊 Предпросмотр исходных данных")
+try:
+    df_raw = safe_read_parquet(uploaded_file)
+    st.write(
+        f"✅ Файл успешно прочитан. Размер: **{df_raw.shape[0]}** строк, **{df_raw.shape[1]}** колонок."
+    )
+    st.dataframe(df_raw.head(10), use_container_width=True)
+except ValueError as e:
+    st.error(str(e))
+    st.stop()
 
-    st.subheader("Input preview")
-    st.dataframe(input_df.head(50), use_container_width=True)
+st.write("### ⚙️ Настройки анализа")
 
-    mode, score_threshold = render_inference_controls()
+col1, col2 = st.columns([2, 1])
+with col1:
+    rows_count = st.slider(
+        "Количество строк для обработки",
+        min_value=10,
+        max_value=int(min(max_rows_input, max(10, len(df_raw)))),
+        value=int(min(1000, len(df_raw), max_rows_input)),
+        step=10,
+        help="Сколько строк данных будет обработано",
+    )
 
-    if st.button("Run inference", type="primary"):
-        with st.spinner("Running inference..."):
-            try:
-                matches = run_inference(
-                    input_df=input_df,
-                    mode=mode,
-                    score_threshold=score_threshold,
-                )
-            except Exception as exc:
-                st.error(f"Inference failed: {exc}")
-                return
+with col2:
+    st.write("")
+    st.write("")
+    run_btn = st.button(
+        "🚀 Запустить inference",
+        type="primary",
+        use_container_width=True,
+    )
 
-        st.subheader("Matches")
-        st.dataframe(matches, use_container_width=True)
+st.divider()
 
-        st.subheader("Report")
-        st.markdown(build_markdown_report(matches))
+if run_btn:
+    progress_bar = st.progress(0)
+    status_text = st.empty()
 
+    with st.spinner("🔄 Обрабатываю данные..."):
+        try:
+            for i in range(30):
+                time.sleep(0.01)
+                progress_bar.progress(i + 1)
+                status_text.text(f"Подготовка данных... {i + 1}%")
 
-if __name__ == "__main__":
-    main()
+            predict_df, notes = run_inference(
+                df=df_raw,
+                max_rows=rows_count,
+                mode=mode,
+                score_threshold=score_threshold,
+            )
+
+            for i in range(30, 100):
+                time.sleep(0.005)
+                progress_bar.progress(i + 1)
+                status_text.text(f"Формирование отчёта... {i + 1}%")
+
+            md_report = build_markdown_report(predict_df, notes=notes, mode=mode)
+
+            progress_bar.empty()
+            status_text.empty()
+
+        except Exception as e:
+            progress_bar.empty()
+            status_text.empty()
+            st.exception(e)
+            st.stop()
+        else:
+            st.success("✅ Inference успешно завершён!")
+
+            st.subheader("📊 Результаты обработки")
+            st.write(f"Найдено пар: **{len(predict_df)}**")
+            st.dataframe(predict_df.head(500), use_container_width=True)
+
+            st.subheader("📝 Markdown-отчёт")
+            st.markdown(md_report)
+
+            escaped_md = html.escape(md_report)
+            copy_button = f"""
+            <textarea id="md_to_copy" style="position:absolute;left:-9999px;">{escaped_md}</textarea>
+            <button onclick="
+                navigator.clipboard.writeText(document.getElementById('md_to_copy').value);
+                this.innerText='✅ Скопировано';
+                setTimeout(() => this.innerText='📋 Копировать markdown', 2000);
+            " style="background-color:#4CAF50;color:white;padding:10px 20px;border:none;
+                     border-radius:5px;cursor:pointer;font-size:16px;">
+                📋 Копировать markdown
+            </button>
+            """
+            st.components.v1.html(copy_button, height=50)
+else:
+    st.info("👆 Нажмите кнопку **Запустить inference**, чтобы начать обработку данных")
