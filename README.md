@@ -176,7 +176,7 @@ cd ..
 Обучить модель и собрать артефакты:
 
 ```powershell
-python src/build_graph_table_artifacts.py --training-scope train --max-negative-pairs 1000000
+python src/build_graph_table_artifacts.py --max-negative-pairs 1000000
 ```
 
 Создать тестовый пакет:
