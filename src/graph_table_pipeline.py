@@ -20,7 +20,6 @@ from graph_table_definitions import (
     EvidenceColumn,
     GEO_KEYS,
     MatchScope,
-    MODEL_FEATURE_DESCRIPTIONS,
     MODEL_FEATURES,
     PACKET_IDENTITY_COLUMNS,
     PAIR_FEATURES,
@@ -29,7 +28,6 @@ from graph_table_definitions import (
     TIME_AWARE_FAMILIES,
     TransformName,
     WEAK_FAMILIES,
-    describe_blocking_rule,
     rule_family_from_name,
 )
 from graph_table_utils import (
@@ -623,7 +621,6 @@ def aggregate_pair_events(pair_events: pd.DataFrame, value_maps: dict[str, dict[
     pair_evidence[C.POSTMAN_CONTEXT_HIT_SHARE] = (
         pair_evidence[C.N_POSTMAN_CONTEXT_HITS] / pair_evidence[C.N_BLOCK_HITS].clip(lower=1)
     )
-    pair_evidence[C.HAS_TIME_AWARE_SIGNAL] = pair_evidence[C.FAMILIES].map(lambda x: int(bool(set(x) & TIME_AWARE_FAMILIES)))
     pair_evidence[C.HAS_TIME_AWARE_DEVICE_SIGNAL] = pair_evidence[C.FAMILIES].map(
         lambda x: int(BlockFamily.BEHAVIOR_DAYPART_DEVICE in x)
     )
@@ -640,21 +637,12 @@ def aggregate_pair_events(pair_events: pd.DataFrame, value_maps: dict[str, dict[
     pair_evidence[C.REGISTRATION_TIME_WINDOW_WITH_BEHAVIOR] = pair_evidence[C.FAMILIES].map(
         lambda x: int((REGISTRATION_TIME_FAMILY in x) and bool(set(x) & BEHAVIOR_EVIDENCE_FAMILIES))
     )
-    pair_evidence[C.WEAK_GEO_TIME_ONLY] = pair_evidence[C.FAMILIES].map(
-        lambda x: int(
-            (REGISTRATION_TIME_FAMILY in x)
-            and set(x).issubset({BlockFamily.CONTEXT, BlockFamily.COVERAGE_COMPOUND, REGISTRATION_TIME_FAMILY})
-        )
-    )
     pair_evidence[C.HAS_CONTEXT] = pair_evidence[C.FAMILIES].map(lambda x: int(BlockFamily.CONTEXT in x))
     pair_evidence[C.HAS_COVERAGE_COMPOUND] = pair_evidence[C.FAMILIES].map(lambda x: int(BlockFamily.COVERAGE_COMPOUND in x))
     pair_evidence[C.ONLY_WEAK_FAMILIES] = pair_evidence[C.FAMILIES].map(lambda x: int(set(x).issubset(WEAK_FAMILIES)))
     pair_evidence[C.RULES_KEY] = pair_evidence[C.RULES].map(lambda x: "|".join(sorted(x)))
     # Добавляем пересечения значений профилей поверх blocking evidence.
     pair_evidence = add_similarity_features(pair_evidence, value_maps)
-    pair_evidence[C.REGISTRATION_TIME_WINDOW_FS_GAP] = (
-        pair_evidence[C.HAS_REGISTRATION_TIME_WINDOW] * (1.0 - pair_evidence[C.FS_TOTAL_JACCARD].clip(lower=0.0, upper=1.0))
-    )
     pair_evidence[C.SMALL_BLOCK_WEAK_FAMILY_ONLY] = (
         pair_evidence[C.HAS_SMALL_BLOCK_LE10].eq(1) & pair_evidence[C.ONLY_WEAK_FAMILIES].eq(1)
     ).astype("int8")
@@ -749,10 +737,6 @@ def aggregate_pair_events_chunked(
     pair_events[C.IS_POSTMAN_CONTEXT] = pair_events[C.BLOCK_FAMILY].eq(BlockFamily.POSTMAN_CONTEXT).astype("int8")
     pair_events[C.IS_STRONG_FAMILY] = pair_events[C.BLOCK_FAMILY].isin(STRONG_FAMILIES).astype("int8")
     pair_events[C.IS_WEAK_FAMILY] = pair_events[C.BLOCK_FAMILY].isin(WEAK_FAMILIES).astype("int8")
-    pair_events[C.TIME_AWARE_BLOCK_WEIGHT] = pair_events[C.BLOCK_WEIGHT] * pair_events[C.IS_TIME_AWARE_FAMILY]
-    pair_events[C.REGISTRATION_TIME_WINDOW_BLOCK_WEIGHT] = (
-        pair_events[C.BLOCK_WEIGHT] * pair_events[C.IS_REGISTRATION_TIME_WINDOW]
-    )
     partials = []
     total_rows = len(pair_events)
     LOGGER.info("chunked pair aggregation start chunk_size=%s", f"{chunk_size:,}")
@@ -777,8 +761,6 @@ def aggregate_pair_events_chunked(
                     C.N_REGISTRATION_TIME_WINDOW_HITS: (C.IS_REGISTRATION_TIME_WINDOW, "sum"),
                     C.N_POSTMAN_CONTEXT_HITS: (C.IS_POSTMAN_CONTEXT, "sum"),
                     C.HIT_BEHAVIOR_DAYPART_DEVICE: (C.IS_BEHAVIOR_DAYPART_DEVICE, "max"),
-                    C.SUM_TIME_AWARE_BLOCK_WEIGHT: (C.TIME_AWARE_BLOCK_WEIGHT, "sum"),
-                    C.SUM_REGISTRATION_TIME_WINDOW_BLOCK_WEIGHT: (C.REGISTRATION_TIME_WINDOW_BLOCK_WEIGHT, "sum"),
                     C.RULES: (C.BLOCK_RULE, lambda s: frozenset(s)),
                     C.FAMILIES: (C.BLOCK_FAMILY, lambda s: frozenset(s)),
                     C.MATCH_SCOPE_SET: (C.MATCH_SCOPE, lambda s: frozenset(map(str, s))),
@@ -830,8 +812,6 @@ def aggregate_pair_events_chunked(
                 C.N_REGISTRATION_TIME_WINDOW_HITS: (C.N_REGISTRATION_TIME_WINDOW_HITS, "sum"),
                 C.N_POSTMAN_CONTEXT_HITS: (C.N_POSTMAN_CONTEXT_HITS, "sum"),
                 C.HIT_BEHAVIOR_DAYPART_DEVICE: (C.HIT_BEHAVIOR_DAYPART_DEVICE, "max"),
-                C.SUM_TIME_AWARE_BLOCK_WEIGHT: (C.SUM_TIME_AWARE_BLOCK_WEIGHT, "sum"),
-                C.SUM_REGISTRATION_TIME_WINDOW_BLOCK_WEIGHT: (C.SUM_REGISTRATION_TIME_WINDOW_BLOCK_WEIGHT, "sum"),
                 C.RULES: (C.RULES, union_frozensets),
                 C.FAMILIES: (C.FAMILIES, union_frozensets),
                 C.MATCH_SCOPE_SET: (C.MATCH_SCOPE_SET, union_frozensets),
@@ -1075,23 +1055,3 @@ def build_assignment_table(
                 }
             )
     return pd.DataFrame(rows).sort_values(["decision", "best_match_score", "profile_id"], ascending=[True, False, True])
-
-
-# Удобная обёртка для сервисного вызова по плоскому dataframe.
-def run_graph_tree_table_inference(
-    df: pd.DataFrame,
-    split: str | None = None,
-    score_threshold: float | None = None,
-    artifact_dir: Path = DEFAULT_ARTIFACT_DIR,
-) -> tuple[pd.DataFrame, dict[str, Any]]:
-    # Обёртка для сервисного режима: принимает плоский dataframe и возвращает assignment.
-    work = df.copy()
-    if split is not None and "split" in work.columns:
-        # split полезен для локальных проверок на подготовленных тестовых пакетах.
-        work = work[work["split"].astype(str).eq(str(split))].copy()
-    packet_core = build_profile_core_from_flat(work)
-    packet_values = build_packet_profile_values_from_flat(work)
-    artifacts = load_artifacts(artifact_dir)
-    assignment, pair_scores, metrics = score_packet(packet_core, packet_values, artifacts, score_threshold)
-    metrics["pairs"] = len(pair_scores)
-    return assignment, metrics

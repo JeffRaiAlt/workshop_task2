@@ -4,6 +4,10 @@ from __future__ import annotations
 # семейства правил и человекочитаемые описания.
 # Основной pipeline импортирует их, чтобы не смешивать справочник с расчётом.
 
+# Значения только для прямых similarity-признаков пары: Jaccard/overlap и
+# совпадения identity. Это не список всех полей blocking-правил.
+# Например, `postman_*` формирует кандидатов через blocking, а в модель
+# передаётся как evidence срабатывания семейства `postman_context`.
 PAIR_FEATURES = [
     ("identity", "email"),
     ("identity", "phone"),
@@ -88,9 +92,6 @@ class EvidenceColumn:
     IS_POSTMAN_CONTEXT = "is_postman_context"
     IS_STRONG_FAMILY = "is_strong_family"
     IS_WEAK_FAMILY = "is_weak_family"
-    TIME_AWARE_BLOCK_WEIGHT = "time_aware_block_weight"
-    REGISTRATION_TIME_WINDOW_BLOCK_WEIGHT = "registration_time_window_block_weight"
-
     N_BLOCK_HITS = "n_block_hits"
     N_BLOCK_RULES = "n_block_rules"
     N_BLOCK_FAMILIES = "n_block_families"
@@ -106,9 +107,6 @@ class EvidenceColumn:
     N_REGISTRATION_TIME_WINDOW_HITS = "n_registration_time_window_hits"
     N_POSTMAN_CONTEXT_HITS = "n_postman_context_hits"
     HIT_BEHAVIOR_DAYPART_DEVICE = "hit_behavior_daypart_device"
-    SUM_TIME_AWARE_BLOCK_WEIGHT = "sum_time_aware_block_weight"
-    SUM_REGISTRATION_TIME_WINDOW_BLOCK_WEIGHT = "sum_registration_time_window_block_weight"
-
     IS_FALLBACK_ONLY = "is_fallback_only"
     HAS_NON_FALLBACK_SIGNAL = "has_non_fallback_signal"
     HAS_SMALL_BLOCK_LE2 = "has_small_block_le2"
@@ -121,18 +119,15 @@ class EvidenceColumn:
     HAS_BEHAVIOR_CONTEXT = "has_behavior_context"
     HAS_POSTMAN_CONTEXT = "has_postman_context"
     POSTMAN_CONTEXT_HIT_SHARE = "postman_context_hit_share"
-    HAS_TIME_AWARE_SIGNAL = "has_time_aware_signal"
     HAS_TIME_AWARE_DEVICE_SIGNAL = "has_time_aware_device_signal"
     TIME_AWARE_HIT_SHARE = "time_aware_hit_share"
     HAS_REGISTRATION_TIME_WINDOW = "has_registration_time_window"
     REGISTRATION_TIME_WINDOW_HIT_SHARE = "registration_time_window_hit_share"
     REGISTRATION_TIME_WINDOW_ONLY = "registration_time_window_only"
     REGISTRATION_TIME_WINDOW_WITH_BEHAVIOR = "registration_time_window_with_behavior"
-    WEAK_GEO_TIME_ONLY = "weak_geo_time_only"
     HAS_CONTEXT = "has_context"
     HAS_COVERAGE_COMPOUND = "has_coverage_compound"
     ONLY_WEAK_FAMILIES = "only_weak_families"
-    REGISTRATION_TIME_WINDOW_FS_GAP = "registration_time_window_fs_gap"
     SMALL_BLOCK_WEAK_FAMILY_ONLY = "small_block_weak_family_only"
     FS_TOTAL_JACCARD = "fs_total_jaccard"
     GEO_TOTAL_JACCARD = "geo_total_jaccard"
@@ -507,154 +502,7 @@ MODEL_FEATURE_DESCRIPTIONS = {
     "small_block_weak_family_only": "Флаг 0/1: пара найдена через маленький блок, но только слабыми семействами правил. Маленький блок полезен, но если он пришел только из слабых правил, это не всегда надежное совпадение.",
 }
 
-RULE_FAMILY_DESCRIPTIONS = {
-    BlockFamily.CONTEXT: {
-        "family_name_ru": "Контекстные гео-правила",
-        "meaning": "Группируют профили по одному географическому или контекстному ключу: город, geoname_id, регион.",
-        "why_used": "Это широкий recall-слой: он помогает не потерять дубли, когда сильных identity-признаков нет.",
-        "risk": "Много разных людей могут жить или регистрироваться в одной географии, поэтому такие правила слабые сами по себе.",
-    },
-    BlockFamily.BEHAVIOR: {
-        "family_name_ru": "Поведенческие правила",
-        "meaning": "Группируют профили по одному fs-признаку: site-id, факт клика, заказа, просмотра, визита.",
-        "why_used": "Редкие поведенческие значения могут хорошо сужать поиск и добавлять полезный сигнал модели.",
-        "risk": "Популярные поведенческие значения широкие и шумные, поэтому модель не должна считать их достаточным доказательством дубля.",
-    },
-    BlockFamily.BEHAVIOR_CONTEXT: {
-        "family_name_ru": "Поведение плюс гео-контекст",
-        "meaning": "Группируют профили по комбинации географии и одного fs-признака.",
-        "why_used": "Комбинация гео + поведение обычно чище, чем гео или поведение по отдельности.",
-        "risk": "Все еще возможны ложные совпадения в популярных городах и популярных site-id.",
-    },
-    BlockFamily.BEHAVIOR_CONTEXT_DEVICE: {
-        "family_name_ru": "Поведение плюс гео/device-контекст",
-        "meaning": "Группируют профили по региону, fs-признаку и OS family.",
-        "why_used": "Это более узкие rescue-композиты, добавленные после анализа пропущенных дублей.",
-        "risk": "Устройство и OS family не являются уникальными, поэтому правило должно работать как evidence, а не как финальное решение.",
-    },
-    BlockFamily.CLUSTER_CANDIDATE: {
-        "family_name_ru": "Кандидаты из кластерного анализа",
-        "meaning": "Узкие композиты, которые появились из разбора cluster_only дублей: кластеризация видела эти пары, а прежние правила нет.",
-        "why_used": "Добавлено по результатам кластерного анализа пропущенных дублей: device/os/browser, fs и postman-сигналы часто совпадали без точного гео.",
-        "risk": "Это экспериментальные evidence-правила; их нужно проверять через охват, нагрузку, размер блоков и false attach после переобучения.",
-    },
-    BlockFamily.POSTMAN_CONTEXT: {
-        "family_name_ru": "Postman плюс гео-контекст",
-        "meaning": "Группируют профили по geoname_id и коммуникационному postman-признаку.",
-        "why_used": "Добавлено как controlled recall-lift: postman может поймать слабые паттерны коммуникационного поведения, но только в связке с географией.",
-        "risk": "Postman-признаки сами по себе шумные; поэтому не используются атомарно.",
-    },
-    BlockFamily.BEHAVIOR_DAYPART: {
-        "family_name_ru": "Поведение плюс часть дня",
-        "meaning": "Группируют профили по географии, fs-признаку, части дня и признаку будни/выходные.",
-        "why_used": "Добавлено после проверки гипотезы, что часть дублей регистрируется в похожем временном контексте.",
-        "risk": "Время похоже у многих независимых пользователей, поэтому правило должно подтверждаться другими сигналами.",
-    },
-    BlockFamily.BEHAVIOR_DAYPART_DEVICE: {
-        "family_name_ru": "Поведение плюс часть дня и device-контекст",
-        "meaning": "Группируют профили по региону, fs-признаку, OS family, части дня и будни/выходные.",
-        "why_used": "Более узкая версия временного правила: добавляет device/os контекст, чтобы снизить шум.",
-        "risk": "Даже узкое временное совпадение не доказывает дубль без поддержки других признаков.",
-    },
-    BlockFamily.REGISTRATION_TIME_WINDOW: {
-        "family_name_ru": "Окно регистрации",
-        "meaning": "Группирует профили, зарегистрированные в близком временном окне, обычно вместе с гео или behavior-контекстом.",
-        "why_used": "Добавлено после наблюдения, что часть реальных дублей появляется близко по времени.",
-        "risk": "Близкое время регистрации может давать ложные приклейки; модель отдельно видит признаки риска для таких случаев.",
-    },
-    BlockFamily.IDENTITY_RESCUE: {
-        "family_name_ru": "Identity rescue",
-        "meaning": "Точечные правила по сильным identity-ключам, сейчас exact phone digits.",
-        "why_used": "Телефон покрывает мало профилей, но совпадение очень точное, поэтому это high-precision rescue.",
-        "risk": "Покрытие маленькое; нельзя ждать большого recall от этого семейства.",
-    },
-    BlockFamily.COVERAGE_COMPOUND: {
-        "family_name_ru": "Составные правила покрытия",
-        "meaning": "Группируют профили по нескольким умеренно слабым признакам, например гео + device + OS family.",
-        "why_used": "Нужны для покрытия профилей, которые не ловятся более сильными правилами.",
-        "risk": "Это recall-слой, а не proof-layer: в одиночку такие правила могут ошибаться.",
-    },
-    BlockFamily.COVERAGE_FALLBACK: {
-        "family_name_ru": "Технический fallback покрытия",
-        "meaning": "Техническое правило, которое кладет профиль в bucket, если другие признаки не дали хорошего кандидата.",
-        "why_used": "Нужно для защиты покрытия, чтобы профиль не выпадал из поиска полностью.",
-        "risk": "Самое слабое семейство; если пара найдена только fallback, это высокий риск ложной связи.",
-    },
-}
-
-
-RULE_COMPONENT_LABELS = {
-    "np_geoname_id": "нормализованный geoname_id из non-processing признаков",
-    "np_subdivision": "регион/субъект из non-processing признаков",
-    "rt_geoname": "город из realtime-признаков",
-    "rt_geoid": "гео-id из realtime-признаков",
-    "np_device": "тип устройства",
-    "np_osfamily": "семейство операционной системы",
-    "np_browser": "браузер",
-    "np_is_not_russia": "флаг: регистрация/контекст вне России",
-    "email_domain": "домен email",
-    "email_initial2": "первые два символа локальной части email",
-    "email_hash_bucket_1024": "hash-bucket от локальной части email",
-    "phone_digits": "нормализованные цифры телефона",
-    "registration_60m": "перекрывающееся окно регистрации около 60 минут",
-    "rt_daypart": "часть дня: ночь, утро, рабочее время или вечер",
-    "rt_weekpart": "будни или выходные",
-}
-
-
-def _rule_component_label(token: str) -> str:
-    if token.startswith("fs_"):
-        return f"fs-признак `{token[3:]}`"
-    return RULE_COMPONENT_LABELS.get(token, token)
-
-
 def rule_family_from_name(rule: str) -> str:
     parts = str(rule).split("__")
     return parts[1] if len(parts) > 2 and parts[0] == "rule" else "unknown"
-
-
-def describe_blocking_rule(block_rule: str, block_family: str | None = None) -> dict[str, str]:
-    """Return a human-readable explanation for a generated blocking rule."""
-    rule = str(block_rule)
-    family = str(block_family or rule_family_from_name(rule))
-    family_info = RULE_FAMILY_DESCRIPTIONS.get(family, {})
-    prefix = f"rule__{family}__"
-    body = rule[len(prefix) :] if rule.startswith(prefix) else rule.replace("rule__", "", 1)
-    components = [_rule_component_label(part) for part in body.split("__") if part]
-    components_text = " + ".join(components) if components else "компоненты не распознаны"
-
-    if family == BlockFamily.CONTEXT:
-        role = "Широкий слой первичного поиска кандидатов."
-    elif family in {
-        BlockFamily.BEHAVIOR_CONTEXT,
-        BlockFamily.BEHAVIOR_CONTEXT_DEVICE,
-        BlockFamily.CLUSTER_CANDIDATE,
-        BlockFamily.POSTMAN_CONTEXT,
-    }:
-        role = "Узкое evidence-правило: помогает модели подтвердить пару, но не является финальным решением само по себе."
-    elif family in {
-        BlockFamily.BEHAVIOR_DAYPART,
-        BlockFamily.BEHAVIOR_DAYPART_DEVICE,
-        BlockFamily.REGISTRATION_TIME_WINDOW,
-    }:
-        role = "Временной recall-сигнал: полезен для поиска дублей, но требует контроля ложных приклеек."
-    elif family == BlockFamily.IDENTITY_RESCUE:
-        role = "High-precision rescue: редкий, но сильный сигнал."
-    elif family == BlockFamily.COVERAGE_COMPOUND:
-        role = "Coverage-слой: расширяет покрытие кандидатов для профилей без сильных identity-сигналов."
-    elif family == BlockFamily.COVERAGE_FALLBACK:
-        role = "Техническая страховка покрытия; самый слабый сигнал."
-    else:
-        role = "Blocking/evidence правило для генерации candidate pairs."
-
-    return {
-        "block_rule": rule,
-        "block_family": family,
-        "family_name_ru": family_info.get("family_name_ru", family),
-        "matches": components_text,
-        "meaning": family_info.get("meaning", "Правило группирует профили по совпадающим значениям перечисленных компонентов."),
-        "why_selected": family_info.get("why_used", "Правило отобрано как часть рекомендованного blocking index."),
-        "risk": family_info.get("risk", "Требует проверки моделью и графовым слоем."),
-        "pipeline_role": role,
-    }
 

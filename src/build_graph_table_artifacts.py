@@ -7,7 +7,6 @@ import json
 import logging
 import sys
 import time
-from collections import defaultdict
 from datetime import datetime
 from itertools import combinations
 from pathlib import Path
@@ -17,28 +16,60 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.metrics import average_precision_score, roc_auc_score
+from xgboost import XGBClassifier
 
 import graph_table_pipeline as graph_pipeline
+from graph_table_definitions import MODEL_FEATURES, PAIR_FEATURES
 from graph_table_pipeline import (
-    MODEL_FEATURES,
     add_block_stats,
     aggregate_pair_events,
     make_value_maps,
 )
-
-try:
-    from xgboost import XGBClassifier
-except Exception:
-    XGBClassifier = None
-
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_MART_DIR = ROOT_DIR / "data" / "processed" / "er_profile_mart_multivalue"
 DEFAULT_OUT_DIR = Path(__file__).resolve().parent / "graph_table_artifacts"
 DEFAULT_WORK_DIR = ROOT_DIR / "reports" / "model_eval" / "graph_table_build"
 
+MODEL_FILE = "graph_edge_model.joblib"
+MODEL_TYPE = "xgboost"
+# Метка используется в именах отчётов; параметры выбранной модели хранятся отдельно.
+POLICY_NAME = "graph_table_xgboost"
+ARTIFACT_VERSION = "graph-table-runtime-v1"
+TRAIN_SCOPE = "train"
+VALID_SCOPE = "valid"
+TRAIN_RANDOM_STATE = 42
+VALID_RANDOM_STATE = 84
+DEFAULT_MAX_TRAIN_NEGATIVE_PAIRS = 700_000
+DEFAULT_MAX_VALID_NEGATIVE_PAIRS = 200_000
+DEFAULT_SCORE_THRESHOLD = 0.95
+DEFAULT_GRAPH_TOP_K = 1
+DEFAULT_MAX_HISTORY_CANDIDATES_PER_PROFILE = 300
+DEFAULT_MAX_CANDIDATE_PAIRS_PER_REQUEST = 1_500_000
+
+
+XGBOOST_BASE_PARAMS = {
+    "objective": "binary:logistic",
+    "eval_metric": "logloss",
+    "tree_method": "hist",
+    "n_jobs": -1,
+    "random_state": 43,
+}
+XGBOOST_TREE_CANDIDATES = [
+    {"n_estimators": 300, "max_depth": 3, "learning_rate": 0.04, "subsample": 0.90, "colsample_bytree": 0.90, "min_child_weight": 1.0},
+    {"n_estimators": 450, "max_depth": 3, "learning_rate": 0.025, "subsample": 0.95, "colsample_bytree": 0.95, "min_child_weight": 1.0},
+    {"n_estimators": 350, "max_depth": 4, "learning_rate": 0.03, "subsample": 0.85, "colsample_bytree": 0.85, "min_child_weight": 1.0},
+    {"n_estimators": 500, "max_depth": 4, "learning_rate": 0.02, "subsample": 0.90, "colsample_bytree": 0.85, "min_child_weight": 2.0},
+    {"n_estimators": 650, "max_depth": 4, "learning_rate": 0.015, "subsample": 0.90, "colsample_bytree": 0.90, "min_child_weight": 2.0},
+    {"n_estimators": 350, "max_depth": 5, "learning_rate": 0.03, "subsample": 0.85, "colsample_bytree": 0.75, "min_child_weight": 3.0},
+    {"n_estimators": 500, "max_depth": 5, "learning_rate": 0.02, "subsample": 0.85, "colsample_bytree": 0.80, "min_child_weight": 3.0},
+    {"n_estimators": 450, "max_depth": 6, "learning_rate": 0.02, "subsample": 0.80, "colsample_bytree": 0.75, "min_child_weight": 5.0},
+]
+XGBOOST_CLASS_WEIGHT_MULTIPLIERS = [0.50, 0.75, 1.00, 1.25]
+
 
 def stable_entity_split(entity_id: str) -> str:
+    """Стабильно разделяет клиентов, чтобы один клиент не попал в разные split."""
     bucket = int(hashlib.md5(str(entity_id).encode("utf-8")).hexdigest()[:8], 16) % 100
     if bucket < 70:
         return "train"
@@ -87,28 +118,29 @@ def scoped_training_frames(
     historical_index: pd.DataFrame,
     historical_values: pd.DataFrame,
     profile_core: pd.DataFrame,
-    training_scope: str,
+    data_scope: str,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    if training_scope in {"train", "valid", "test"}:
-        scoped_profile_ids = set(
-            profile_core.loc[
-                profile_core["entity_id"].map(stable_entity_split).eq(training_scope),
-                "profile_id",
-            ].astype(str)
-        )
-        scoped_index = historical_index[historical_index["profile_id"].isin(scoped_profile_ids)].copy()
-        scoped_values = historical_values[historical_values["profile_id"].isin(scoped_profile_ids)].copy()
-        scoped_core = profile_core[profile_core["profile_id"].isin(scoped_profile_ids)].copy()
-    elif training_scope == "full":
-        scoped_index = historical_index.copy()
-        scoped_values = historical_values.copy()
-        scoped_core = profile_core.copy()
-    else:
-        raise ValueError(f"Unknown training_scope: {training_scope}")
+    """Берёт данные одного split для обучения или выбора параметров.
+
+    `test` здесь запрещён: он должен оставаться независимым до финальной
+    проверки инференса, иначе итоговые метрики будут завышены.
+    """
+    if data_scope not in {TRAIN_SCOPE, VALID_SCOPE}:
+        raise ValueError(f"Unsupported training data scope: {data_scope}")
+    scoped_profile_ids = set(
+        profile_core.loc[
+            profile_core["entity_id"].map(stable_entity_split).eq(data_scope),
+            "profile_id",
+        ].astype(str)
+    )
+    scoped_index = historical_index[historical_index["profile_id"].isin(scoped_profile_ids)].copy()
+    scoped_values = historical_values[historical_values["profile_id"].isin(scoped_profile_ids)].copy()
+    scoped_core = profile_core[profile_core["profile_id"].isin(scoped_profile_ids)].copy()
     return scoped_index, scoped_values, scoped_core
 
 
 def profile_entity_map(profile_core: pd.DataFrame) -> dict[str, str]:
+    """Строит lookup разметки: по нему пара получает целевой класс 0/1."""
     entity_frame = profile_core[["profile_id", "entity_id"]].copy()
     entity_frame["profile_id"] = entity_frame["profile_id"].astype(str)
     entity_frame["entity_id"] = entity_frame["entity_id"].astype(str)
@@ -141,6 +173,7 @@ def add_historical_derived_values(profile_values: pd.DataFrame, profile_core: pd
 
 
 def negative_cache_tag(max_negative_pairs: int) -> str:
+    """Кодирует лимит отрицательных пар в имени кеша, чтобы не смешать запуски."""
     return "all_negatives" if max_negative_pairs <= 0 else f"neg_{max_negative_pairs}"
 
 
@@ -256,6 +289,12 @@ def collect_selected_pair_events(
     selected_pairs: set[tuple[str, str]],
     logger: logging.Logger,
 ) -> pd.DataFrame:
+    """Возвращает все срабатывания правил только для уже отобранных пар.
+
+    В первом проходе выбираются пары, чтобы ограничить объём отрицательного
+    класса. Второй проход сохраняет все правила выбранной пары: без них
+    невозможно посчитать evidence-признаки модели.
+    """
     group_cols = ["block_family", "block_rule", "block_value"]
     grouped = scoped_index.groupby(group_cols, sort=False)
     total_blocks = grouped.ngroups
@@ -303,6 +342,12 @@ def sample_training_pairs(
     random_state: int,
     logger: logging.Logger,
 ) -> pd.DataFrame:
+    """Формирует конечную таблицу для fit, сохраняя все положительные пары.
+
+    Ограничиваются только отрицательные примеры: их очень много, а полная
+    выборка существенно увеличивает время обучения без гарантии роста recall.
+    Дополнительная отсечка нужна и при чтении ранее сохранённого кеша.
+    """
     use_all_negative_pairs = max_negative_pairs <= 0
     positives = pair_evidence[pair_evidence["label"].eq(1)]
     negatives = pair_evidence[pair_evidence["label"].eq(0)]
@@ -334,30 +379,12 @@ def xgboost_param_grid(scale_pos_weight: float) -> list[dict[str, object]]:
     Базовый вес равен `отрицательные / положительные`; множители позволяют
     validation-выборке выбрать более мягкую или более строгую поправку.
     """
-    base = {
-        "objective": "binary:logistic",
-        "eval_metric": "logloss",
-        "tree_method": "hist",
-        "n_jobs": -1,
-        "random_state": 43,
-    }
-    tree_candidates = [
-        {"n_estimators": 300, "max_depth": 3, "learning_rate": 0.04, "subsample": 0.90, "colsample_bytree": 0.90, "min_child_weight": 1.0},
-        {"n_estimators": 450, "max_depth": 3, "learning_rate": 0.025, "subsample": 0.95, "colsample_bytree": 0.95, "min_child_weight": 1.0},
-        {"n_estimators": 350, "max_depth": 4, "learning_rate": 0.03, "subsample": 0.85, "colsample_bytree": 0.85, "min_child_weight": 1.0},
-        {"n_estimators": 500, "max_depth": 4, "learning_rate": 0.02, "subsample": 0.90, "colsample_bytree": 0.85, "min_child_weight": 2.0},
-        {"n_estimators": 650, "max_depth": 4, "learning_rate": 0.015, "subsample": 0.90, "colsample_bytree": 0.90, "min_child_weight": 2.0},
-        {"n_estimators": 350, "max_depth": 5, "learning_rate": 0.03, "subsample": 0.85, "colsample_bytree": 0.75, "min_child_weight": 3.0},
-        {"n_estimators": 500, "max_depth": 5, "learning_rate": 0.02, "subsample": 0.85, "colsample_bytree": 0.80, "min_child_weight": 3.0},
-        {"n_estimators": 450, "max_depth": 6, "learning_rate": 0.02, "subsample": 0.80, "colsample_bytree": 0.75, "min_child_weight": 5.0},
-    ]
-    scale_multipliers = [0.50, 0.75, 1.00, 1.25]
     candidates = []
-    for params in tree_candidates:
-        for multiplier in scale_multipliers:
+    for params in XGBOOST_TREE_CANDIDATES:
+        for multiplier in XGBOOST_CLASS_WEIGHT_MULTIPLIERS:
             candidates.append(
                 {
-                    **base,
+                    **XGBOOST_BASE_PARAMS,
                     **params,
                     "scale_pos_weight": scale_pos_weight * multiplier,
                     "scale_pos_weight_multiplier": multiplier,
@@ -367,6 +394,7 @@ def xgboost_param_grid(scale_pos_weight: float) -> list[dict[str, object]]:
 
 
 def score_binary_metric(y_true: pd.Series, y_score: np.ndarray, metric: str) -> float:
+    """Считает метрику выбора конфигурации XGBoost на validation-парах."""
     if y_true.nunique() < 2:
         return float("nan")
     if metric == "average_precision":
@@ -390,9 +418,6 @@ def select_xgboost_model_on_valid(
     AP, или average precision, оценивает ранжирование пар на validation.
     Финальное качество объединений затем отдельно проверяется через inference.
     """
-    if XGBClassifier is None:
-        raise RuntimeError("xgboost is not installed")
-
     best_model = None
     best_report: dict[str, object] | None = None
     rows = []
@@ -443,12 +468,12 @@ def build_training_pair_evidence(
     profile_core: pd.DataFrame,
     work_dir: Path,
     use_training_cache: bool,
-    training_scope: str,
+    data_scope: str,
     max_negative_pairs: int,
     random_state: int,
     logger: logging.Logger,
 ) -> pd.DataFrame:
-    cache_path = work_dir / f"training_pair_evidence_{training_scope}_{negative_cache_tag(max_negative_pairs)}.parquet"
+    cache_path = work_dir / f"training_pair_evidence_{data_scope}_{negative_cache_tag(max_negative_pairs)}.parquet"
     if use_training_cache and cache_path.exists():
         logger.info("load central training pair evidence cache path=%s", cache_path)
         cached = pd.read_parquet(cache_path)
@@ -464,13 +489,13 @@ def build_training_pair_evidence(
         historical_index=historical_index,
         historical_values=historical_values,
         profile_core=profile_core,
-        training_scope=training_scope,
+        data_scope=data_scope,
     )
 
     logger.info("rebuild central training pair evidence from historical blocking_index")
     logger.info(
-        "training_scope=%s scoped_profiles=%s scoped_index_rows=%s",
-        training_scope,
+        "data_scope=%s scoped_profiles=%s scoped_index_rows=%s",
+        data_scope,
         f"{scoped_core['profile_id'].nunique():,}",
         f"{len(scoped_index):,}",
     )
@@ -516,18 +541,142 @@ def build_training_pair_evidence(
     return pair_evidence
 
 
+def feature_matrix(pair_df: pd.DataFrame) -> pd.DataFrame:
+    """Готовит матрицу признаков в фиксированном порядке обученной модели."""
+    return pair_df[MODEL_FEATURES].replace([np.inf, -np.inf], np.nan).fillna(0)
+
+
+def train_xgboost_on_train_select_on_valid(
+    historical_index: pd.DataFrame,
+    historical_values: pd.DataFrame,
+    profile_core: pd.DataFrame,
+    work_dir: Path,
+    use_training_cache: bool,
+    max_negative_pairs: int,
+    validation_negative_pairs: int,
+    logger: logging.Logger,
+) -> tuple[XGBClassifier, dict[str, object]]:
+    """Обучает XGBoost на `train` и выбирает параметры только по `valid`.
+
+    `entity_id` используется здесь как целевая разметка пары. Клиенты
+    предварительно разделены целиком по split, поэтому одна сущность не
+    появляется одновременно в обучении и проверке параметров.
+
+    `test` в этой функции не используется. Его роль - проверить уже готовый
+    pipeline: blocking, score, порог и финальные группы профилей.
+    """
+    logger.info("prepare train pairs: fit XGBoost only on train entities")
+    train_pair_evidence = build_training_pair_evidence(
+        historical_index=historical_index,
+        historical_values=historical_values,
+        profile_core=profile_core,
+        work_dir=work_dir,
+        use_training_cache=use_training_cache,
+        data_scope=TRAIN_SCOPE,
+        max_negative_pairs=max_negative_pairs,
+        random_state=TRAIN_RANDOM_STATE,
+        logger=logger,
+    )
+    train_df = sample_training_pairs(
+        train_pair_evidence,
+        max_negative_pairs,
+        random_state=TRAIN_RANDOM_STATE,
+        logger=logger,
+    )
+    x_train = feature_matrix(train_df)
+    y_train = train_df["label"].astype(int)
+    positives = int(y_train.sum())
+    negatives = int(len(y_train) - positives)
+    # В кандидатах отрицательных пар значительно больше положительных.
+    # Базовый вес компенсирует дисбаланс, а его итоговый множитель выбирает valid.
+    scale_pos_weight = negatives / max(positives, 1)
+
+    logger.info("prepare valid pairs: select XGBoost configuration without fitting on valid entities")
+    valid_pair_evidence = build_training_pair_evidence(
+        historical_index=historical_index,
+        historical_values=historical_values,
+        profile_core=profile_core,
+        work_dir=work_dir,
+        use_training_cache=use_training_cache,
+        data_scope=VALID_SCOPE,
+        max_negative_pairs=validation_negative_pairs,
+        random_state=VALID_RANDOM_STATE,
+        logger=logger,
+    )
+    valid_df = sample_training_pairs(
+        valid_pair_evidence,
+        validation_negative_pairs,
+        random_state=VALID_RANDOM_STATE,
+        logger=logger,
+    )
+    x_valid = feature_matrix(valid_df)
+    y_valid = valid_df["label"].astype(int)
+    logger.info(
+        "validation rows=%s positives=%s negatives=%s",
+        f"{len(valid_df):,}",
+        f"{int(y_valid.sum()):,}",
+        f"{int(len(y_valid) - y_valid.sum()):,}",
+    )
+
+    # Average Precision выбирает конфигурацию на несбалансированных парах:
+    # модель должна поднимать реальные совпадения выше множества ложных пар.
+    model, selected_report, validation_report = select_xgboost_model_on_valid(
+        x_train=x_train,
+        y_train=y_train,
+        x_valid=x_valid,
+        y_valid=y_valid,
+        scale_pos_weight=scale_pos_weight,
+        work_dir=work_dir,
+        logger=logger,
+    )
+    model_params = {
+        key: value
+        for key, value in selected_report.items()
+        if key not in {"candidate_no", "valid_average_precision", "valid_roc_auc", "scale_pos_weight_multiplier"}
+    }
+    validation_report.update(
+        {
+            "hyperparameter_selection": "valid_average_precision",
+            "validation_scope": VALID_SCOPE,
+            "validation_rows": int(len(valid_df)),
+            "validation_positive_rows": int(y_valid.sum()),
+            "validation_negative_rows": int(len(y_valid) - y_valid.sum()),
+            "selected_candidate_no": int(selected_report["candidate_no"]),
+            "selected_valid_average_precision": float(selected_report["valid_average_precision"]),
+            "selected_valid_roc_auc": float(selected_report["valid_roc_auc"]),
+            "selected_scale_pos_weight_multiplier": float(selected_report["scale_pos_weight_multiplier"]),
+        }
+    )
+    training_report = {
+        "model_params": model_params,
+        "training_rows": int(len(train_df)),
+        "positive_rows": positives,
+        "negative_rows": negatives,
+        **validation_report,
+    }
+    return model, training_report
+
+
 def build_artifacts(
     mart_dir: Path,
     out_dir: Path,
     work_dir: Path,
     max_negative_pairs: int,
-    skip_model: bool,
     use_training_cache: bool,
-    training_scope: str,
-    tune_xgboost: bool,
     validation_negative_pairs: int,
     logger: logging.Logger,
 ) -> None:
+    """Собирает runtime-историю и обучает единственную production-модель XGBoost.
+
+    Последовательность:
+    1. Прочитать готовую витрину и список разрешённых blocking-правил.
+    2. Собрать индекс и значения истории, нужные inference.
+    3. На парах `train` обучить XGBoost, на парах `valid` выбрать его параметры.
+    4. Сохранить модель, runtime-настройки и паспорт обучения.
+
+    `test` намеренно отсутствует в builder: он используется только после
+    сборки артефактов в `run_graph_table_inference.py` и threshold sweep.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
     work_dir.mkdir(parents=True, exist_ok=True)
 
@@ -536,29 +685,25 @@ def build_artifacts(
     logger.info("out_dir=%s", out_dir)
     logger.info("work_dir=%s", work_dir)
     logger.info(
-        "skip_model=%s max_negative_pairs=%s tune_xgboost=%s validation_negative_pairs=%s",
-        skip_model,
+        "max_negative_pairs=%s validation_negative_pairs=%s",
         "all" if max_negative_pairs <= 0 else f"{max_negative_pairs:,}",
-        tune_xgboost,
         "all" if validation_negative_pairs <= 0 else f"{validation_negative_pairs:,}",
     )
     logger.info("use_training_cache=%s", use_training_cache)
-    logger.info("training_scope=%s", training_scope)
+    logger.info("fit_scope=%s parameter_selection_scope=%s test_scope=offline_inference_only", TRAIN_SCOPE, VALID_SCOPE)
 
     logger.info("load mart inputs")
     profile_core = pd.read_parquet(mart_dir / "profile_core.parquet")
     profile_values = pd.read_parquet(mart_dir / "profile_value_summary_long.parquet")
-    blocking_index = pd.read_parquet(mart_dir / "blocking_index.parquet")
     recommended_rules = pd.read_csv(mart_dir / "recommended_blocking_rules.csv")
     logger.info(
-        "loaded profiles=%s values=%s blocking_rows=%s rules=%s",
+        "loaded profiles=%s values=%s rules=%s",
         f"{len(profile_core):,}",
         f"{len(profile_values):,}",
-        f"{len(blocking_index):,}",
         f"{len(recommended_rules):,}",
     )
 
-    for df in [profile_core, profile_values, blocking_index]:
+    for df in [profile_core, profile_values]:
         for col in ["profile_id", "entity_id", "block_family", "block_rule", "block_value", "source", "feature", "value_norm"]:
             if col in df.columns:
                 df[col] = df[col].astype(str)
@@ -573,7 +718,9 @@ def build_artifacts(
     )
     logger.info("recommended rules selected=%s", f"{len(recommended_rule_names):,}")
 
-    logger.info("build historical blocking index with production rule generator")
+    # Индекс пересобирается из значений и утверждённых правил, потому что
+    # runtime должен использовать тот же генератор ключей, что и новый пакет.
+    logger.info("build historical blocking index with runtime rule generator")
     historical_index = graph_pipeline.build_blocking_index(
         profile_values,
         recommended_rule_names=recommended_rule_names,
@@ -585,31 +732,11 @@ def build_artifacts(
     historical_index = add_block_stats(historical_index[["profile_id", "block_family", "block_rule", "block_value"]])
     logger.info("historical blocking rows=%s profiles=%s", f"{len(historical_index):,}", f"{historical_index['profile_id'].nunique():,}")
 
-    pair_feature_keys = set(tuple(item) for item in [
-        ("identity", "email"),
-        ("identity", "phone"),
-        ("identity", "first_name"),
-        ("identity", "last_name"),
-        ("identity", "birthday"),
-        ("identity", "sex"),
-        ("np", "geoname_id"),
-        ("np", "subdivision_1_iso_code"),
-        ("np", "device"),
-        ("np", "browser"),
-        ("np", "osfamily"),
-        ("rt", "geoid"),
-        ("rt", "geoname"),
-        ("rt", "country"),
-        ("fs", "source_site_365"),
-        ("fs", "source_site_30"),
-        ("fs", "visited_30"),
-        ("fs", "visited_365"),
-        ("fs", "has_account"),
-        ("fs", "has_click_365"),
-        ("fs", "has_accept_365"),
-    ])
     historical_values = profile_values[
-        profile_values[["source", "feature"]].apply(tuple, axis=1).isin(pair_feature_keys)
+        # В артефакт значений кладём только поля, для которых считаем прямой
+        # Jaccard/overlap. Значения, нужные лишь для blocking (например
+        # postman), уже зафиксированы в historical_blocking_index.
+        profile_values[["source", "feature"]].apply(tuple, axis=1).isin(set(PAIR_FEATURES))
     ][["profile_id", "source", "feature", "value_norm"]].drop_duplicates()
     logger.info("historical values rows=%s", f"{len(historical_values):,}")
 
@@ -621,160 +748,49 @@ def build_artifacts(
     write_json(out_dir / "recommended_rule_names.json", sorted(recommended_rule_names))
     write_json(out_dir / "feature_cols.json", MODEL_FEATURES)
 
-    model_file = "graph_edge_model.joblib"
-    training_report = {"model_trained": False}
-    if not skip_model:
-        logger.info("prepare training pairs")
-        pair_evidence = build_training_pair_evidence(
-            historical_index=historical_index,
-            historical_values=historical_values,
-            profile_core=profile_core,
-            work_dir=work_dir,
-            use_training_cache=use_training_cache,
-            training_scope=training_scope,
-            max_negative_pairs=max_negative_pairs,
-            random_state=42,
-            logger=logger,
-        )
-        train_df = sample_training_pairs(pair_evidence, max_negative_pairs, random_state=42, logger=logger)
-        x_train = train_df[MODEL_FEATURES].replace([np.inf, -np.inf], np.nan).fillna(0)
-        y_train = train_df["label"].astype(int)
-        positives = int(y_train.sum())
-        negatives = int(len(y_train) - positives)
-        scale_pos_weight = negatives / max(positives, 1)
-        validation_report: dict[str, object] = {}
-        if XGBClassifier is None:
-            raise RuntimeError("xgboost is not installed")
-        if tune_xgboost and training_scope == "train":
-            logger.info("prepare validation pairs for XGBoost hyperparameter selection")
-            valid_pair_evidence = build_training_pair_evidence(
-                historical_index=historical_index,
-                historical_values=historical_values,
-                profile_core=profile_core,
-                work_dir=work_dir,
-                use_training_cache=use_training_cache,
-                training_scope="valid",
-                max_negative_pairs=validation_negative_pairs,
-                random_state=84,
-                logger=logger,
-            )
-            valid_df = sample_training_pairs(
-                valid_pair_evidence,
-                validation_negative_pairs,
-                random_state=84,
-                logger=logger,
-            )
-            x_valid = valid_df[MODEL_FEATURES].replace([np.inf, -np.inf], np.nan).fillna(0)
-            y_valid = valid_df["label"].astype(int)
-            logger.info(
-                "validation rows=%s positives=%s negatives=%s",
-                f"{len(valid_df):,}",
-                f"{int(y_valid.sum()):,}",
-                f"{int(len(y_valid) - y_valid.sum()):,}",
-            )
-            model, selected_report, validation_report = select_xgboost_model_on_valid(
-                x_train=x_train,
-                y_train=y_train,
-                x_valid=x_valid,
-                y_valid=y_valid,
-                scale_pos_weight=scale_pos_weight,
-                work_dir=work_dir,
-                logger=logger,
-            )
-            model_params = {
-                key: value
-                for key, value in selected_report.items()
-                if key not in {"candidate_no", "valid_average_precision", "valid_roc_auc", "scale_pos_weight_multiplier"}
-            }
-            policy_name = f"xgb_valid_selected_candidate_{selected_report['candidate_no']}"
-            validation_report.update(
-                {
-                    "hyperparameter_selection": "valid_average_precision",
-                    "validation_scope": "valid",
-                    "validation_rows": int(len(valid_df)),
-                    "validation_positive_rows": int(y_valid.sum()),
-                    "validation_negative_rows": int(len(y_valid) - y_valid.sum()),
-                    "selected_candidate_no": int(selected_report["candidate_no"]),
-                    "selected_valid_average_precision": float(selected_report["valid_average_precision"]),
-                    "selected_valid_roc_auc": float(selected_report["valid_roc_auc"]),
-                    "selected_scale_pos_weight_multiplier": float(selected_report["scale_pos_weight_multiplier"]),
-                }
-            )
-        else:
-            policy_name = "xgb_depth4_lr003_full_train" if max_negative_pairs <= 0 else "xgb_depth4_lr003_sampled_train"
-            model_params = {
-                "n_estimators": 350,
-                "max_depth": 4,
-                "learning_rate": 0.03,
-                "subsample": 0.85,
-                "colsample_bytree": 0.85,
-                "scale_pos_weight": scale_pos_weight,
-                "objective": "binary:logistic",
-                "eval_metric": "logloss",
-                "tree_method": "hist",
-                "n_jobs": -1,
-                "random_state": 43,
-            }
-            logger.info(
-                "fit XGBClassifier rows=%s features=%s params=%s",
-                f"{len(x_train):,}",
-                f"{len(MODEL_FEATURES):,}",
-                json.dumps(model_params, sort_keys=True),
-            )
-            model = XGBClassifier(**model_params)
-        if not (tune_xgboost and training_scope == "train"):
-            model.fit(x_train, y_train)
-        logger.info("save model path=%s", out_dir / model_file)
-        joblib.dump(model, out_dir / model_file)
-        training_report = {
-            "model_trained": True,
-            "policy_name": policy_name,
-            "model_type": "xgboost",
-            "model_params": model_params,
-            "training_rows": int(len(train_df)),
-            "positive_rows": positives,
-            "negative_rows": negatives,
-            "scale_pos_weight": scale_pos_weight,
-            "max_negative_pairs": "all" if max_negative_pairs <= 0 else int(max_negative_pairs),
-            "training_scope": training_scope,
-            "training_pair_evidence_path": relative_to_project(
-                work_dir / f"training_pair_evidence_{training_scope}_{negative_cache_tag(max_negative_pairs)}.parquet"
-            ),
-            "training_pair_evidence_source": "rebuilt_from_mart_blocking_index",
-            **validation_report,
-        }
+    model, training_report = train_xgboost_on_train_select_on_valid(
+        historical_index=historical_index,
+        historical_values=historical_values,
+        profile_core=profile_core,
+        work_dir=work_dir,
+        use_training_cache=use_training_cache,
+        max_negative_pairs=max_negative_pairs,
+        validation_negative_pairs=validation_negative_pairs,
+        logger=logger,
+    )
+    logger.info("save XGBoost model path=%s", out_dir / MODEL_FILE)
+    joblib.dump(model, out_dir / MODEL_FILE)
 
     created_at = datetime.now().isoformat(timespec="seconds")
-    artifact_version = "graph-table-runtime-v1"
     config = {
-        "model_file": model_file,
-        "policy_name": training_report.get("policy_name", "xgb_depth4_lr003"),
-        "score_threshold": 0.95,
+        "model_file": MODEL_FILE,
+        "policy_name": POLICY_NAME,
+        # Начальный рабочий порог. Для нового эксперимента его можно
+        # переопределить в inference или проверить threshold sweep.
+        "score_threshold": DEFAULT_SCORE_THRESHOLD,
         # После оценки моделью каждый профиль может выбрать не более K лучших соседей.
         # Связь попадёт в граф только при взаимном выборе двух профилей.
         # При K=1 граф осторожнее объединяет клиентов; рост K повышает полноту,
         # но также увеличивает риск ошибочных объединений через цепочки связей.
-        "graph_top_k": 1,
+        "graph_top_k": DEFAULT_GRAPH_TOP_K,
         # При поиске в истории одно шумное совпадение правила не должно породить
-        # тысячи сравнений для одного входного profile_id. Оставляем до 300
-        # наиболее сильных исторических кандидатов для каждого нового профиля,
-        # а уже затем считаем признаки пары и запускаем XGBoost.
-        "max_history_candidates_per_profile": 300,
-        # Общий предохранитель на один входной пакет: после персонального лимита
-        # выше в XGBoost уходит не более 1.5 млн пар "профиль пакета - профиль
-        # истории". Параметр управляет временем и памятью поиска; слишком
-        # низкое значение может отрезать правильного исторического кандидата.
-        "max_candidate_pairs_per_request": 1_500_000,
+        # слишком много сравнений для одного входного profile_id. Ограничение
+        # применяется до расчёта признаков пары и запуска XGBoost.
+        "max_history_candidates_per_profile": DEFAULT_MAX_HISTORY_CANDIDATES_PER_PROFILE,
+        # Общий предохранитель на один входной пакет после персонального лимита:
+        # параметр управляет временем и памятью поиска; слишком низкое значение
+        # может отрезать правильного исторического кандидата.
+        "max_candidate_pairs_per_request": DEFAULT_MAX_CANDIDATE_PAIRS_PER_REQUEST,
     }
     model_manifest = {
-        "artifact_version": artifact_version,
+        "artifact_version": ARTIFACT_VERSION,
         "created_at": created_at,
         "model_file": config["model_file"],
         "policy_name": config["policy_name"],
-        "model_type": training_report.get("model_type", "xgboost"),
+        "model_type": MODEL_TYPE,
         "model_params": training_report.get("model_params"),
-        "model_trained": training_report.get("model_trained", False),
-        "training_scope": training_report.get("training_scope", training_scope),
+        "model_trained": True,
+        "training_scope": TRAIN_SCOPE,
         "training_rows": training_report.get("training_rows"),
         "positive_rows": training_report.get("positive_rows"),
         "negative_rows": training_report.get("negative_rows"),
@@ -804,12 +820,11 @@ def main() -> None:
         default=DEFAULT_WORK_DIR,
         help="Каталог кэша обучения, отчёта подбора параметров и логов; inference его не использует.",
     )
-    parser.add_argument("--max-negative-pairs", type=int, default=700_000)
     parser.add_argument(
-        "--training-scope",
-        choices=["train", "full"],
-        default="train",
-        help="Часть данных для обучения модели. Исторические артефакты поиска всегда собираются по всем данным.",
+        "--max-negative-pairs",
+        type=int,
+        default=DEFAULT_MAX_TRAIN_NEGATIVE_PAIRS,
+        help="Максимум отрицательных пар в train; положительные пары сохраняются полностью.",
     )
     parser.add_argument(
         "--use-training-cache",
@@ -817,17 +832,11 @@ def main() -> None:
         help="Использовать готовые признаки обучающих пар из --work-dir, если файл уже существует. По умолчанию пересчитать.",
     )
     parser.add_argument(
-        "--skip-xgboost-tuning",
-        action="store_true",
-        help="Использовать фиксированные параметры XGBoost вместо выбора по validation-выборке.",
-    )
-    parser.add_argument(
         "--validation-negative-pairs",
         type=int,
-        default=200_000,
+        default=DEFAULT_MAX_VALID_NEGATIVE_PAIRS,
         help="Максимум отрицательных пар validation-выборки при выборе параметров XGBoost.",
     )
-    parser.add_argument("--skip-model", action="store_true")
     args = parser.parse_args()
     logger = setup_logger(args.work_dir)
     graph_pipeline.LOGGER = logger
@@ -836,10 +845,7 @@ def main() -> None:
         args.out_dir,
         args.work_dir,
         args.max_negative_pairs,
-        args.skip_model,
         args.use_training_cache,
-        args.training_scope,
-        not args.skip_xgboost_tuning,
         args.validation_negative_pairs,
         logger,
     )
